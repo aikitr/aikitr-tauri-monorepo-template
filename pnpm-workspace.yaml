@@ -1,3 +1,15 @@
 packages:
   - "apps/*"
   - "packages/*"
+
+# pnpm 11 默认启用 minimumReleaseAge: 1440（24h）供应链策略。
+# --frozen-lockfile 模式下，lockfile 中若包含发布不足 24h 的包会直接报 ERR_PNPM_MINIMUM_RELEASE_AGE_VIOLATION，
+# 导致 CI 在依赖新版本发布后随机失败。作为模板项目，优先保证 CI 稳定性，显式禁用该策略。
+minimumReleaseAge: 0
+
+# pnpm 10+ 默认禁止依赖包运行生命周期脚本（preinstall/install/postinstall）。
+# 以下包需要构建脚本才能正常工作：esbuild 需下载平台原生二进制，vue-demi 需切换 Vue 运行时。
+# 在 allowBuilds 中显式置为 true 放行，否则 pnpm install 以 ERR_PNPM_IGNORED_BUILDS 退出码 1 失败。
+allowBuilds:
+  esbuild: true
+  vue-demi: true
