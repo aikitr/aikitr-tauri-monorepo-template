@@ -22,10 +22,10 @@
     "clean": "pnpm -r exec rimraf dist node_modules .turbo .cache"
   },
   "devDependencies": {
-    "@types/node": "^20.14.10",
-    "eslint": "^9.10.0",
+    "@types/node": "^26.1.2",
+    "eslint": "^10.8.0",
     "prettier": "^3.3.3",
     "rimraf": "^6.0.1",
-    "typescript": "^5.5.4"
+    "typescript": "^7.0.2"
   }
 }

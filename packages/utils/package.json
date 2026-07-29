@@ -36,8 +36,8 @@
     "build": "tsc -p tsconfig.build.json"
   },
   "devDependencies": {
-    "typescript": "^5.5.4",
-    "vitest": "^2.0.5"
+    "typescript": "^7.0.2",
+    "vitest": "^4.1.10"
   },
   "dependencies": {
     "ofetch": "^1.4.0"

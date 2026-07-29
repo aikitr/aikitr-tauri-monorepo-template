@@ -20,6 +20,6 @@
     "build": "tsc -p tsconfig.build.json"
   },
   "devDependencies": {
-    "typescript": "^5.5.4"
+    "typescript": "^7.0.2"
   }
 }
