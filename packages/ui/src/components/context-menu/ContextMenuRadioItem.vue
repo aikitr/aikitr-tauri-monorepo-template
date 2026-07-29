@@ -1,48 +1,38 @@
 <script setup lang="ts">
-import { computed, type HTMLAttributes } from 'vue';
-import { ContextMenuRadioItem } from 'reka-ui';
-import { cn } from '../../lib/utils';
+import type { ContextMenuRadioItemEmits, ContextMenuRadioItemProps } from "reka-ui"
+import type { HTMLAttributes } from "vue"
+import { Circle } from "@lucide/vue"
+import { reactiveOmit } from "@vueuse/core"
+import {
+  ContextMenuItemIndicator,
+  ContextMenuRadioItem,
+  useForwardPropsEmits,
+} from "reka-ui"
+import { cn } from "../../lib/utils"
 
-interface Props {
-  class?: HTMLAttributes['class'];
-  disabled?: boolean;
-  textValue?: string;
-  value?: string;
-}
-const props = withDefaults(defineProps<Props>(), { disabled: false });
-const emit = defineEmits<{ select: [event: Event] }>();
+const props = defineProps<ContextMenuRadioItemProps & { class?: HTMLAttributes["class"] }>()
+const emits = defineEmits<ContextMenuRadioItemEmits>()
 
-const classes = computed(() =>
-  cn(
-    'relative flex cursor-pointer select-none items-center rounded-sm py-1.5 pl-8 pr-2 text-sm outline-none transition-colors',
-    'focus:bg-accent focus:text-accent-foreground',
-    'data-[disabled]:pointer-events-none data-[disabled]:opacity-50',
-    props.class,
-  ),
-);
+const delegatedProps = reactiveOmit(props, "class")
+
+const forwarded = useForwardPropsEmits(delegatedProps, emits)
 </script>
 
 <template>
   <ContextMenuRadioItem
-    :disabled="disabled"
-    :text-value="textValue"
-    :value="value"
-    :class="classes"
-    @select="(e) => emit('select', e)"
+    data-slot="context-menu-radio-item"
+    v-bind="forwarded"
+    :class="cn(
+      `focus:bg-accent focus:text-accent-foreground relative flex cursor-default items-center gap-2 rounded-sm py-1.5 pr-2 pl-8 text-sm outline-hidden select-none data-[disabled]:pointer-events-none data-[disabled]:opacity-50 [&_svg]:pointer-events-none [&_svg]:shrink-0 [&_svg:not([class*='size-'])]:size-4`,
+      props.class,
+    )"
   >
-    <span class="absolute left-2 flex h-3.5 w-3.5 items-center justify-center">
-      <svg
-        xmlns="http://www.w3.org/2000/svg"
-        viewBox="0 0 24 24"
-        fill="none"
-        stroke="currentColor"
-        stroke-width="2"
-        stroke-linecap="round"
-        stroke-linejoin="round"
-        class="h-2 w-2 fill-current"
-      >
-        <circle cx="12" cy="12" r="6" />
-      </svg>
+    <span class="pointer-events-none absolute left-2 flex size-3.5 items-center justify-center">
+      <ContextMenuItemIndicator>
+        <slot name="indicator-icon">
+          <Circle class="size-2 fill-current" />
+        </slot>
+      </ContextMenuItemIndicator>
     </span>
     <slot />
   </ContextMenuRadioItem>

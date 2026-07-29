@@ -1,22 +1,19 @@
 <script setup lang="ts">
-import { computed, type HTMLAttributes } from 'vue';
-import { TooltipProvider, TooltipRoot } from 'reka-ui';
-import { cn } from '../../lib/utils';
+import type { TooltipRootEmits, TooltipRootProps } from "reka-ui"
+import { TooltipRoot, useForwardPropsEmits } from "reka-ui"
 
-interface Props {
-  class?: HTMLAttributes['class'];
-  open?: boolean;
-  defaultOpen?: boolean;
-  delayDuration?: number;
-}
-const props = withDefaults(defineProps<Props>(), { delayDuration: 200 });
-const classes = computed(() => cn(props.class));
+const props = defineProps<TooltipRootProps>()
+const emits = defineEmits<TooltipRootEmits>()
+
+const forwarded = useForwardPropsEmits(props, emits)
 </script>
 
 <template>
-  <TooltipProvider :delay-duration="delayDuration">
-    <TooltipRoot :open="open" :default-open="defaultOpen" :class="classes">
-      <slot />
-    </TooltipRoot>
-  </TooltipProvider>
+  <TooltipRoot
+    v-slot="slotProps"
+    data-slot="tooltip"
+    v-bind="forwarded"
+  >
+    <slot v-bind="slotProps" />
+  </TooltipRoot>
 </template>

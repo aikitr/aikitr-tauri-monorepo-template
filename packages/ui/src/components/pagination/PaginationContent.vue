@@ -1,18 +1,22 @@
 <script setup lang="ts">
-import { computed, type HTMLAttributes } from 'vue';
-import { cn } from '../../lib/utils';
+import type { PaginationListProps } from "reka-ui"
+import type { HTMLAttributes } from "vue"
+import { reactiveOmit } from "@vueuse/core"
+import { PaginationList } from "reka-ui"
+import { cn } from "../../lib/utils"
 
-interface Props {
-  class?: HTMLAttributes['class'];
-}
-const props = defineProps<Props>();
-const classes = computed(() =>
-  cn('flex flex-row items-center gap-1', props.class),
-);
+const props = defineProps<PaginationListProps & { class?: HTMLAttributes["class"] }>()
+
+const delegatedProps = reactiveOmit(props, "class")
 </script>
 
 <template>
-  <ul :class="classes">
-    <slot />
-  </ul>
+  <PaginationList
+    v-slot="slotProps"
+    data-slot="pagination-content"
+    v-bind="delegatedProps"
+    :class="cn('flex flex-row items-center gap-1', props.class)"
+  >
+    <slot v-bind="slotProps" />
+  </PaginationList>
 </template>

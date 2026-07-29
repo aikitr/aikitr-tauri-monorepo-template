@@ -1,70 +1,49 @@
 <script setup lang="ts">
-import { computed, provide, type HTMLAttributes } from 'vue';
-import { ToggleGroupRoot, type ToggleGroupRootEmits, type ToggleGroupRootProps } from 'reka-ui';
-import { cva, type VariantProps } from 'class-variance-authority';
-import { cn } from '../../lib/utils';
-import { toggleVariants } from '../toggle/Toggle.vue';
+import type { VariantProps } from "class-variance-authority"
+import type { ToggleGroupRootEmits, ToggleGroupRootProps } from "reka-ui"
+import type { HTMLAttributes } from "vue"
+import type { toggleVariants } from "../toggle"
+import { reactiveOmit } from "@vueuse/core"
+import { ToggleGroupRoot, useForwardPropsEmits } from "reka-ui"
+import { provide } from "vue"
+import { cn } from "../../lib/utils"
 
-export const toggleGroupVariants = cva(
-  'flex items-center justify-center gap-1',
-  {
-    variants: {
-      variant: {
-        default: '',
-        outline: '',
-      },
-    },
-    defaultVariants: {
-      variant: 'default',
-    },
-  },
-);
+type ToggleGroupVariants = VariantProps<typeof toggleVariants>
 
-export type ToggleGroupVariants = VariantProps<typeof toggleGroupVariants>;
+const props = withDefaults(defineProps<ToggleGroupRootProps & {
+  class?: HTMLAttributes["class"]
+  variant?: ToggleGroupVariants["variant"]
+  size?: ToggleGroupVariants["size"]
+  spacing?: number
+}>(), {
+  spacing: 0,
+})
 
-interface Props {
-  class?: HTMLAttributes['class'];
-  modelValue?: ToggleGroupRootProps['modelValue'];
-  defaultValue?: ToggleGroupRootProps['defaultValue'];
-  type?: 'single' | 'multiple';
-  variant?: ToggleGroupVariants['variant'];
-  size?: VariantProps<typeof toggleVariants>['size'];
-  disabled?: boolean;
-  rovingFocus?: boolean;
-}
+const emits = defineEmits<ToggleGroupRootEmits>()
 
-const props = withDefaults(defineProps<Props>(), {
-  type: 'single',
-  variant: 'default',
-  size: 'default',
-  disabled: false,
-  rovingFocus: true,
-});
+provide("toggleGroup", {
+  variant: props.variant,
+  size: props.size,
+  spacing: props.spacing,
+})
 
-const emit = defineEmits<ToggleGroupRootEmits>();
-
-function onUpdateModelValue(value: string | string[]): void {
-  emit('update:modelValue', value);
-}
-
-const classes = computed(() =>
-  cn(toggleGroupVariants({ variant: props.variant }), props.class),
-);
-
-provide('toggleGroupVariant', props.variant);
-provide('toggleGroupSize', props.size);
+const delegatedProps = reactiveOmit(props, "class", "size", "variant")
+const forwarded = useForwardPropsEmits(delegatedProps, emits)
 </script>
 
 <template>
   <ToggleGroupRoot
-    :class="classes"
-    :type="type"
-    :model-value="modelValue"
-    :default-value="defaultValue"
-    :disabled="disabled"
-    :roving-focus="rovingFocus"
-    @update:model-value="onUpdateModelValue"
+    v-slot="slotProps"
+    data-slot="toggle-group"
+    :data-size="size"
+    :data-variant="variant"
+    :data-spacing="spacing"
+    :style="{
+      '--gap': spacing,
+    }"
+    v-bind="forwarded"
+    :class="cn('group/toggle-group flex w-fit items-center gap-[--spacing(var(--gap))] rounded-md data-[spacing=default]:data-[variant=outline]:shadow-xs', props.class)"
   >
-    <slot />
+    <slot v-bind="slotProps" />
   </ToggleGroupRoot>
 </template>

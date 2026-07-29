@@ -1,20 +1,19 @@
 <script setup lang="ts">
-import { computed, type HTMLAttributes } from 'vue';
-import { DropdownMenuRoot } from 'reka-ui';
-import { cn } from '../../lib/utils';
+import type { DropdownMenuRootEmits, DropdownMenuRootProps } from "reka-ui"
+import { DropdownMenuRoot, useForwardPropsEmits } from "reka-ui"
 
-interface Props {
-  class?: HTMLAttributes['class'];
-  open?: boolean;
-  defaultOpen?: boolean;
-  modal?: boolean;
-}
-const props = withDefaults(defineProps<Props>(), { modal: true });
-const classes = computed(() => cn(props.class));
+const props = defineProps<DropdownMenuRootProps>()
+const emits = defineEmits<DropdownMenuRootEmits>()
+
+const forwarded = useForwardPropsEmits(props, emits)
 </script>
 
 <template>
-  <DropdownMenuRoot :open="open" :default-open="defaultOpen" :modal="modal" :class="classes">
-    <slot />
+  <DropdownMenuRoot
+    v-slot="slotProps"
+    data-slot="dropdown-menu"
+    v-bind="forwarded"
+  >
+    <slot v-bind="slotProps" />
   </DropdownMenuRoot>
 </template>

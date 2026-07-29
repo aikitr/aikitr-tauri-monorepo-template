@@ -1,20 +1,17 @@
 <script setup lang="ts">
-import { computed, type HTMLAttributes } from 'vue';
-import { cn } from '../../lib/utils';
+import type { HTMLAttributes } from "vue"
+import { cn } from "../../lib/utils"
 
-interface Props {
-  class?: HTMLAttributes['class'];
-}
-
-const props = defineProps<Props>();
-
-const classes = computed(() =>
-  cn('border-t bg-muted/50 font-medium [&>tr]:last:border-b-0', props.class),
-);
+const props = defineProps<{
+  class?: HTMLAttributes["class"]
+}>()
 </script>
 
 <template>
-  <tfoot :class="classes">
+  <tfoot
+    data-slot="table-footer"
+    :class="cn('bg-muted/50 border-t font-medium [&>tr]:last:border-b-0', props.class)"
+  >
     <slot />
   </tfoot>
 </template>

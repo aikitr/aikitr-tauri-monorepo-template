@@ -1,20 +1,24 @@
 <script setup lang="ts">
-import { computed, type HTMLAttributes } from 'vue';
-import { AccordionItem, type AccordionItemProps } from 'reka-ui';
-import { cn } from '../../lib/utils';
+import type { AccordionItemProps } from "reka-ui"
+import type { HTMLAttributes } from "vue"
+import { reactiveOmit } from "@vueuse/core"
+import { AccordionItem, useForwardProps } from "reka-ui"
+import { cn } from "../../lib/utils"
 
-interface Props extends AccordionItemProps {
-  class?: HTMLAttributes['class'];
-}
-const props = defineProps<Props>();
+const props = defineProps<AccordionItemProps & { class?: HTMLAttributes["class"] }>()
 
-const classes = computed(() =>
-  cn('border-b', props.class),
-);
+const delegatedProps = reactiveOmit(props, "class")
+
+const forwardedProps = useForwardProps(delegatedProps)
 </script>
 
 <template>
-  <AccordionItem :class="classes" :value="props.value" :disabled="props.disabled">
-    <slot />
+  <AccordionItem
+    v-slot="slotProps"
+    data-slot="accordion-item"
+    v-bind="forwardedProps"
+    :class="cn('border-b last:border-b-0', props.class)"
+  >
+    <slot v-bind="slotProps" />
   </AccordionItem>
 </template>

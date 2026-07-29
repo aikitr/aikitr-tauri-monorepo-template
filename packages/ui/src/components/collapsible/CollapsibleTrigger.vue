@@ -1,18 +1,15 @@
 <script setup lang="ts">
-import { computed, type HTMLAttributes } from 'vue';
-import { CollapsibleTrigger } from 'reka-ui';
-import { cn } from '../../lib/utils';
+import type { CollapsibleTriggerProps } from "reka-ui"
+import { CollapsibleTrigger } from "reka-ui"
 
-interface Props {
-  class?: HTMLAttributes['class'];
-  asChild?: boolean;
-}
-const props = withDefaults(defineProps<Props>(), { asChild: false });
-const classes = computed(() => cn(props.class));
+const props = defineProps<CollapsibleTriggerProps>()
 </script>
 
 <template>
-  <CollapsibleTrigger :as-child="asChild" :class="classes">
+  <CollapsibleTrigger
+    data-slot="collapsible-trigger"
+    v-bind="props"
+  >
     <slot />
   </CollapsibleTrigger>
 </template>

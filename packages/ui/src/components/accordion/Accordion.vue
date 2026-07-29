@@ -1,18 +1,18 @@
 <script setup lang="ts">
-import { AccordionRoot, type AccordionRootEmits, type AccordionRootProps } from 'reka-ui';
+import type { AccordionRootEmits, AccordionRootProps } from "reka-ui"
+import {
+  AccordionRoot,
+  useForwardPropsEmits,
+} from "reka-ui"
 
-interface Props extends AccordionRootProps {}
-const props = defineProps<Props>();
+const props = defineProps<AccordionRootProps>()
+const emits = defineEmits<AccordionRootEmits>()
 
-const emit = defineEmits<AccordionRootEmits>();
-
-function onUpdateModelValue(value: string | string[]): void {
-  emit('update:modelValue', value);
-}
+const forwarded = useForwardPropsEmits(props, emits)
 </script>
 
 <template>
-  <AccordionRoot v-bind="props" @update:model-value="onUpdateModelValue">
-    <slot />
+  <AccordionRoot v-slot="slotProps" data-slot="accordion" v-bind="forwarded">
+    <slot v-bind="slotProps" />
   </AccordionRoot>
 </template>

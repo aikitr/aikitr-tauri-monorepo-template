@@ -1,6 +1,6 @@
 import { HttpClient } from '@aikitr/utils';
 import type { AppPlatform } from '@aikitr/types';
-import { isTauri } from './env';
+import { isTauri } from '../tauri/env';
 
 let _client: HttpClient | null = null;
 
@@ -9,16 +9,15 @@ export function initApiClient(options: { baseURL?: string } = {}): HttpClient {
   _client = new HttpClient({
     baseURL: options.baseURL ?? '/api',
     timeout: 15_000,
-    onRequest: async ({ url, options: opts }) => {
-      const headers = new Headers(opts.headers);
+    onRequest: async ({ options: opts }) => {
+      const headers = new Headers(opts.headers as HeadersInit | undefined);
       headers.set('X-Client', 'aikitr-desktop');
       headers.set('X-Platform', await getPlatformSafe());
       opts.headers = headers;
     },
-    onError: async (err) => {
-      // surface to logger transport
+    onError: async (err, ctx) => {
       const { logger } = await import('../logger');
-      logger.error('api error', { code: err.code, status: err.status, url });
+      logger.error('api error', { code: err.code, status: err.status, url: ctx?.url ?? '' });
     },
   });
   return _client;

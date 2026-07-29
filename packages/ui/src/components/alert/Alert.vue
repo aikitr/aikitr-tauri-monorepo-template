@@ -1,39 +1,21 @@
 <script setup lang="ts">
-import { computed, type HTMLAttributes } from 'vue';
-import { cva, type VariantProps } from 'class-variance-authority';
-import { cn } from '../../lib/utils';
+import type { HTMLAttributes } from "vue"
+import type { AlertVariants } from "."
+import { cn } from "../../lib/utils"
+import { alertVariants } from "."
 
-export const alertVariants = cva(
-  'relative w-full rounded-lg border p-4 [&>svg~*]:pl-7 [&>svg+div]:translate-y-[-3px] [&>svg]:absolute [&>svg]:left-4 [&>svg]:top-4 [&>svg]:text-foreground',
-  {
-    variants: {
-      variant: {
-        default: 'bg-background text-foreground',
-        destructive:
-          'border-destructive/50 text-destructive dark:border-destructive [&>svg]:text-destructive',
-        success:
-          'border-green-500/50 text-green-700 dark:border-green-500 [&>svg]:text-green-700',
-        warning:
-          'border-yellow-500/50 text-yellow-700 dark:border-yellow-500 [&>svg]:text-yellow-700',
-      },
-    },
-    defaultVariants: { variant: 'default' },
-  },
-);
-
-export type AlertVariants = VariantProps<typeof alertVariants>;
-
-interface Props {
-  class?: HTMLAttributes['class'];
-  variant?: AlertVariants['variant'];
-}
-const props = withDefaults(defineProps<Props>(), { variant: 'default' });
-
-const classes = computed(() => cn(alertVariants({ variant: props.variant }), props.class));
+const props = defineProps<{
+  class?: HTMLAttributes["class"]
+  variant?: AlertVariants["variant"]
+}>()
 </script>
 
 <template>
-  <div role="alert" :class="classes">
+  <div
+    data-slot="alert"
+    :class="cn(alertVariants({ variant }), props.class)"
+    role="alert"
+  >
     <slot />
   </div>
 </template>

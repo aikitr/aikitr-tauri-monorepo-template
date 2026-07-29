@@ -1,15 +1,15 @@
 <script setup lang="ts">
-import { SelectValue } from 'reka-ui';
+import type { SelectValueProps } from "reka-ui"
+import { SelectValue } from "reka-ui"
 
-interface Props {
-  placeholder?: string;
-}
-
-withDefaults(defineProps<Props>(), {
-  placeholder: '',
-});
+const props = defineProps<SelectValueProps>()
 </script>
 
 <template>
-  <SelectValue :placeholder="placeholder" />
+  <SelectValue
+    data-slot="select-value"
+    v-bind="props"
+  >
+    <slot />
+  </SelectValue>
 </template>

@@ -1,14 +1,15 @@
 <script setup lang="ts">
-import { PopoverTrigger } from 'reka-ui';
+import type { PopoverTriggerProps } from "reka-ui"
+import { PopoverTrigger } from "reka-ui"
 
-interface Props {
-  asChild?: boolean;
-}
-withDefaults(defineProps<Props>(), { asChild: true });
+const props = defineProps<PopoverTriggerProps>()
 </script>
 
 <template>
-  <PopoverTrigger :as-child="asChild">
+  <PopoverTrigger
+    data-slot="popover-trigger"
+    v-bind="props"
+  >
     <slot />
   </PopoverTrigger>
 </template>

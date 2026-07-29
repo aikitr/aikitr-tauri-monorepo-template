@@ -1,64 +1,33 @@
 <script setup lang="ts">
-import { computed, type HTMLAttributes } from 'vue';
-import { cn } from '../../lib/utils';
+import type { HTMLAttributes } from "vue"
+import { useVModel } from "@vueuse/core"
+import { cn } from "../../lib/utils"
 
-interface Props {
-  class?: HTMLAttributes['class'];
-  modelValue?: string | number;
-  type?: string;
-  placeholder?: string;
-  disabled?: boolean;
-  readonly?: boolean;
-  required?: boolean;
-  id?: string;
-  name?: string;
-  autocomplete?: string;
-}
+const props = defineProps<{
+  defaultValue?: string | number
+  modelValue?: string | number
+  class?: HTMLAttributes["class"]
+}>()
 
-const props = withDefaults(defineProps<Props>(), {
-  type: 'text',
-  disabled: false,
-  readonly: false,
-  required: false,
-});
+const emits = defineEmits<{
+  (e: "update:modelValue", payload: string | number): void
+}>()
 
-const emit = defineEmits<{
-  'update:modelValue': [value: string | number];
-  blur: [event: FocusEvent];
-  focus: [event: FocusEvent];
-}>();
-
-const classes = computed(() =>
-  cn(
-    'flex h-9 w-full rounded-md border border-input bg-transparent px-3 py-1 text-sm shadow-sm transition-colors',
-    'file:border-0 file:bg-transparent file:text-sm file:font-medium file:text-foreground',
-    'placeholder:text-muted-foreground',
-    'focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring',
-    'disabled:cursor-not-allowed disabled:opacity-50',
-    props.class,
-  ),
-);
-
-function onInput(e: Event): void {
-  const target = e.target as HTMLInputElement;
-  emit('update:modelValue', target.value);
-}
+const modelValue = useVModel(props, "modelValue", emits, {
+  passive: true,
+  defaultValue: props.defaultValue,
+})
 </script>
 
 <template>
   <input
-    :id="id"
-    :name="name"
-    :type="type"
-    :class="classes"
-    :value="modelValue ?? ''"
-    :placeholder="placeholder"
-    :disabled="disabled"
-    :readonly="readonly"
-    :required="required"
-    :autocomplete="autocomplete"
-    @input="onInput"
-    @blur="(e) => $emit('blur', e)"
-    @focus="(e) => $emit('focus', e)"
-  />
+    v-model="modelValue"
+    data-slot="input"
+    :class="cn(
+      'file:text-foreground placeholder:text-muted-foreground selection:bg-primary selection:text-primary-foreground dark:bg-input/30 border-input h-9 w-full min-w-0 rounded-md border bg-transparent px-3 py-1 text-base shadow-xs transition-[color,box-shadow] outline-none file:inline-flex file:h-7 file:border-0 file:bg-transparent file:text-sm file:font-medium disabled:pointer-events-none disabled:cursor-not-allowed disabled:opacity-50 md:text-sm',
+      'focus-visible:border-ring focus-visible:ring-ring/50 focus-visible:ring-3',
+      'aria-invalid:ring-destructive/20 dark:aria-invalid:ring-destructive/40 aria-invalid:border-destructive',
+      props.class,
+    )"
+  >
 </template>

@@ -3,18 +3,16 @@ import { storeToRefs } from 'pinia';
 import { useAppStore } from '@/stores/app';
 import { useSettingsStore } from '@/stores/settings';
 import { useDarkMode } from '@aikitr/hooks';
-import { Button, Switch } from '@aikitr/ui';
-import { useToast } from '@aikitr/ui';
+import { Button, Switch, toast } from '@aikitr/ui';
 
 const appStore = useAppStore();
 const { info, platform } = storeToRefs(appStore);
 const settingsStore = useSettingsStore();
 const { settings } = storeToRefs(settingsStore);
 const { preference } = useDarkMode();
-const toast = useToast();
 
 function onClickPing(): void {
-  toast.success('Pinged', 'Main window received the signal.');
+  toast.success('Main window received the signal.');
 }
 </script>
 

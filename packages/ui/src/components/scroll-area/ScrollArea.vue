@@ -1,27 +1,33 @@
 <script setup lang="ts">
-import { computed, type HTMLAttributes } from 'vue';
-import { ScrollAreaRoot, ScrollAreaViewport } from 'reka-ui';
-import { cn } from '../../lib/utils';
+import type { ScrollAreaRootProps } from "reka-ui"
+import type { HTMLAttributes } from "vue"
+import { reactiveOmit } from "@vueuse/core"
+import {
+  ScrollAreaCorner,
+  ScrollAreaRoot,
+  ScrollAreaViewport,
+} from "reka-ui"
+import { cn } from "../../lib/utils"
+import ScrollBar from "./ScrollBar.vue"
 
-interface Props {
-  class?: HTMLAttributes['class'];
-  orientation?: 'vertical' | 'horizontal' | 'both';
-}
+const props = defineProps<ScrollAreaRootProps & { class?: HTMLAttributes["class"] }>()
 
-const props = withDefaults(defineProps<Props>(), {
-  orientation: 'vertical',
-});
-
-const classes = computed(() =>
-  cn('relative overflow-hidden', props.class),
-);
+const delegatedProps = reactiveOmit(props, "class")
 </script>
 
 <template>
-  <ScrollAreaRoot :class="classes" :orientation="orientation">
-    <ScrollAreaViewport class="h-full w-full rounded-[inherit]">
+  <ScrollAreaRoot
+    data-slot="scroll-area"
+    v-bind="delegatedProps"
+    :class="cn('relative', props.class)"
+  >
+    <ScrollAreaViewport
+      data-slot="scroll-area-viewport"
+      class="focus-visible:ring-ring/50 size-full rounded-[inherit] transition-[color,box-shadow] outline-none focus-visible:ring-3 focus-visible:outline-1"
+    >
       <slot />
     </ScrollAreaViewport>
-    <slot name="scrollbar" />
+    <ScrollBar />
+    <ScrollAreaCorner />
   </ScrollAreaRoot>
 </template>

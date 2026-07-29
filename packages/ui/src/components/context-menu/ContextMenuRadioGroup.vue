@@ -1,24 +1,20 @@
 <script setup lang="ts">
-import { computed, type HTMLAttributes } from 'vue';
-import { ContextMenuRadioGroup } from 'reka-ui';
-import { cn } from '../../lib/utils';
+import type { ContextMenuRadioGroupEmits, ContextMenuRadioGroupProps } from "reka-ui"
+import {
+  ContextMenuRadioGroup,
+  useForwardPropsEmits,
+} from "reka-ui"
 
-interface Props {
-  class?: HTMLAttributes['class'];
-  modelValue?: string;
-}
-const props = defineProps<Props>();
-const emit = defineEmits<{
-  'update:modelValue': [value: string];
-}>();
-const classes = computed(() => cn(props.class));
+const props = defineProps<ContextMenuRadioGroupProps>()
+const emits = defineEmits<ContextMenuRadioGroupEmits>()
+
+const forwarded = useForwardPropsEmits(props, emits)
 </script>
 
 <template>
   <ContextMenuRadioGroup
-    :model-value="modelValue"
-    :class="classes"
-    @update:model-value="(v) => emit('update:modelValue', v)"
+    data-slot="context-menu-radio-group"
+    v-bind="forwarded"
   >
     <slot />
   </ContextMenuRadioGroup>

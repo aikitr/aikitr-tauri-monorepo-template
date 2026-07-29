@@ -1,24 +1,21 @@
 <script setup lang="ts">
-import { computed, type HTMLAttributes } from 'vue';
-import { AvatarFallback } from 'reka-ui';
-import { cn } from '../../lib/utils';
+import type { AvatarFallbackProps } from "reka-ui"
+import type { HTMLAttributes } from "vue"
+import { reactiveOmit } from "@vueuse/core"
+import { AvatarFallback } from "reka-ui"
+import { cn } from "../../lib/utils"
 
-interface Props {
-  class?: HTMLAttributes['class'];
-  delayMs?: number;
-}
-const props = defineProps<Props>();
+const props = defineProps<AvatarFallbackProps & { class?: HTMLAttributes["class"] }>()
 
-const classes = computed(() =>
-  cn(
-    'flex h-full w-full items-center justify-center rounded-full bg-muted',
-    props.class,
-  ),
-);
+const delegatedProps = reactiveOmit(props, "class")
 </script>
 
 <template>
-  <AvatarFallback :delay-ms="props.delayMs" :class="classes">
+  <AvatarFallback
+    data-slot="avatar-fallback"
+    v-bind="delegatedProps"
+    :class="cn('bg-muted flex size-full items-center justify-center rounded-full', props.class)"
+  >
     <slot />
   </AvatarFallback>
 </template>

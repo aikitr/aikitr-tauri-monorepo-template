@@ -1,30 +1,34 @@
 <script setup lang="ts">
-import { computed, type HTMLAttributes } from 'vue';
-import { TooltipContent, TooltipPortal } from 'reka-ui';
-import { cn } from '../../lib/utils';
+import type { TooltipContentEmits, TooltipContentProps } from "reka-ui"
+import type { HTMLAttributes } from "vue"
+import { reactiveOmit } from "@vueuse/core"
+import { TooltipArrow, TooltipContent, TooltipPortal, useForwardPropsEmits } from "reka-ui"
+import { cn } from "../../lib/utils"
 
-interface Props {
-  class?: HTMLAttributes['class'];
-  side?: 'top' | 'right' | 'bottom' | 'left';
-  sideOffset?: number;
-}
-const props = withDefaults(defineProps<Props>(), { side: 'top', sideOffset: 4 });
-const classes = computed(() =>
-  cn(
-    'z-50 overflow-hidden rounded-md border border-border bg-popover px-3 py-1.5 text-sm text-popover-foreground shadow-md',
-    'data-[state=delayed-open]:data-[side=bottom]:slide-in-from-top-2',
-    'data-[state=delayed-open]:data-[side=left]:slide-in-from-right-2',
-    'data-[state=delayed-open]:data-[side=right]:slide-in-from-left-2',
-    'data-[state=delayed-open]:data-[side=top]:slide-in-from-bottom-2',
-    props.class,
-  ),
-);
+defineOptions({
+  inheritAttrs: false,
+})
+
+const props = withDefaults(defineProps<TooltipContentProps & { class?: HTMLAttributes["class"] }>(), {
+  sideOffset: 4,
+})
+
+const emits = defineEmits<TooltipContentEmits>()
+
+const delegatedProps = reactiveOmit(props, "class")
+const forwarded = useForwardPropsEmits(delegatedProps, emits)
 </script>
 
 <template>
   <TooltipPortal>
-    <TooltipContent :side="side" :side-offset="sideOffset" :class="classes">
+    <TooltipContent
+      data-slot="tooltip-content"
+      v-bind="{ ...forwarded, ...$attrs }"
+      :class="cn('bg-foreground text-background animate-in fade-in-0 zoom-in-95 data-[state=closed]:animate-out data-[state=closed]:fade-out-0 data-[state=closed]:zoom-out-95 data-[side=bottom]:slide-in-from-top-2 data-[side=left]:slide-in-from-right-2 data-[side=right]:slide-in-from-left-2 data-[side=top]:slide-in-from-bottom-2 z-50 w-fit rounded-md px-3 py-1.5 text-xs text-balance', props.class)"
+    >
       <slot />
+
+      <TooltipArrow class="bg-foreground fill-foreground z-50 size-2.5 translate-y-[calc(-50%_-_2px)] rotate-45 rounded-xs" />
     </TooltipContent>
   </TooltipPortal>
 </template>

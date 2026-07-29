@@ -1,15 +1,14 @@
 <script setup lang="ts">
-import { TooltipProvider } from 'reka-ui';
+import type { TooltipProviderProps } from "reka-ui"
+import { TooltipProvider } from "reka-ui"
 
-interface Props {
-  delayDuration?: number;
-  skipDelayDuration?: number;
-}
-withDefaults(defineProps<Props>(), { delayDuration: 200, skipDelayDuration: 0 });
+const props = withDefaults(defineProps<TooltipProviderProps>(), {
+  delayDuration: 0,
+})
 </script>
 
 <template>
-  <TooltipProvider :delay-duration="delayDuration" :skip-delay-duration="skipDelayDuration">
+  <TooltipProvider v-bind="props">
     <slot />
   </TooltipProvider>
 </template>

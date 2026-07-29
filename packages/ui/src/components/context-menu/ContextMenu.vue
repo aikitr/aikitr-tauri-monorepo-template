@@ -1,20 +1,18 @@
 <script setup lang="ts">
-import { computed, type HTMLAttributes } from 'vue';
-import { ContextMenuRoot } from 'reka-ui';
-import { cn } from '../../lib/utils';
+import type { ContextMenuRootEmits, ContextMenuRootProps } from "reka-ui"
+import { ContextMenuRoot, useForwardPropsEmits } from "reka-ui"
 
-interface Props {
-  class?: HTMLAttributes['class'];
-  open?: boolean;
-  defaultOpen?: boolean;
-  modal?: boolean;
-}
-const props = withDefaults(defineProps<Props>(), { modal: true });
-const classes = computed(() => cn(props.class));
+const props = defineProps<ContextMenuRootProps>()
+const emits = defineEmits<ContextMenuRootEmits>()
+
+const forwarded = useForwardPropsEmits(props, emits)
 </script>
 
 <template>
-  <ContextMenuRoot :open="open" :default-open="defaultOpen" :modal="modal" :class="classes">
+  <ContextMenuRoot
+    data-slot="context-menu"
+    v-bind="forwarded"
+  >
     <slot />
   </ContextMenuRoot>
 </template>

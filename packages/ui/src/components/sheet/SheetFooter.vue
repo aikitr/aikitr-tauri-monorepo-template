@@ -1,20 +1,16 @@
 <script setup lang="ts">
-import { computed, type HTMLAttributes } from 'vue';
-import { cn } from '../../lib/utils';
+import type { HTMLAttributes } from "vue"
+import { cn } from "../../lib/utils"
 
-interface Props {
-  class?: HTMLAttributes['class'];
-}
-
-const props = defineProps<Props>();
-
-const classes = computed(() =>
-  cn('flex flex-col-reverse sm:flex-row sm:justify-end sm:space-x-2', props.class),
-);
+const props = defineProps<{ class?: HTMLAttributes["class"] }>()
 </script>
 
 <template>
-  <div :class="classes">
+  <div
+    data-slot="sheet-footer"
+    :class="cn('mt-auto flex flex-col gap-2 p-4', props.class)
+    "
+  >
     <slot />
   </div>
 </template>

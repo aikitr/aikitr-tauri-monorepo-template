@@ -1,24 +1,19 @@
 <script setup lang="ts">
-import { computed, type HTMLAttributes } from 'vue';
-import { PopoverRoot } from 'reka-ui';
-import { cn } from '../../lib/utils';
+import type { PopoverRootEmits, PopoverRootProps } from "reka-ui"
+import { PopoverRoot, useForwardPropsEmits } from "reka-ui"
 
-interface Props {
-  class?: HTMLAttributes['class'];
-  open?: boolean;
-  defaultOpen?: boolean;
-  modal?: boolean;
-}
-const props = withDefaults(defineProps<Props>(), { modal: true });
-const classes = computed(() => cn(props.class));
+const props = defineProps<PopoverRootProps>()
+const emits = defineEmits<PopoverRootEmits>()
 
-const emit = defineEmits<{
-  'update:open': [value: boolean];
-}>();
+const forwarded = useForwardPropsEmits(props, emits)
 </script>
 
 <template>
-  <PopoverRoot :open="open" :default-open="defaultOpen" :modal="modal" :class="classes" @update:open="(v) => emit('update:open', v)">
-    <slot />
+  <PopoverRoot
+    v-slot="slotProps"
+    data-slot="popover"
+    v-bind="forwarded"
+  >
+    <slot v-bind="slotProps" />
   </PopoverRoot>
 </template>

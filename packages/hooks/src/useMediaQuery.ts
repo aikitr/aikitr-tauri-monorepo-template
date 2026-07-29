@@ -1,4 +1,4 @@
-import { ref, onBeforeUnmount } from 'vue';
+import { ref, onBeforeUnmount, getCurrentInstance, type Ref } from 'vue';
 
 export function useMediaQuery(query: string): Ref<boolean> {
   const matches = ref(false);
@@ -10,6 +10,9 @@ export function useMediaQuery(query: string): Ref<boolean> {
     matches.value = e.matches;
   };
   mql.addEventListener('change', onChange);
-  onBeforeUnmount(() => mql.removeEventListener('change', onChange));
+  const instance = getCurrentInstance();
+  if (instance != null) {
+    onBeforeUnmount(() => mql.removeEventListener('change', onChange));
+  }
   return matches;
 }

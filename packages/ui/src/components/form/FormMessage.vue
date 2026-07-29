@@ -1,23 +1,23 @@
-<script setup lang="ts">
-import { computed, inject, type ComputedRef, type HTMLAttributes } from 'vue';
-import { cn } from '../../lib/utils';
+<script lang="ts" setup>
+import type { HTMLAttributes } from "vue"
+import { ErrorMessage } from "vee-validate"
+import { toValue } from "vue"
+import { cn } from "../../lib/utils"
+import { useFormField } from "./useFormField"
 
-interface Props {
-  class?: HTMLAttributes['class'];
-}
-const props = defineProps<Props>();
+const props = defineProps<{
+  class?: HTMLAttributes["class"]
+}>()
 
-const fieldContext = inject<{
-  error: ComputedRef<string | undefined>;
-} | null>('formFieldContext', null);
-
-const errorMessage = computed(() => fieldContext?.error?.value);
-
-const classes = computed(() => cn('text-[0.8rem] font-medium text-destructive', props.class));
+const { name, formMessageId } = useFormField()
 </script>
 
 <template>
-  <p v-if="errorMessage" :class="classes">
-    {{ errorMessage }}
-  </p>
+  <ErrorMessage
+    :id="formMessageId"
+    data-slot="form-message"
+    as="p"
+    :name="toValue(name)"
+    :class="cn('text-destructive text-sm', props.class)"
+  />
 </template>

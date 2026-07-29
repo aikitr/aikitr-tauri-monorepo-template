@@ -1,18 +1,15 @@
 <script setup lang="ts">
-import { computed, type HTMLAttributes } from 'vue';
-import { DialogTrigger } from 'reka-ui';
-import { cn } from '../../lib/utils';
+import type { DialogTriggerProps } from "reka-ui"
+import { DialogTrigger } from "reka-ui"
 
-interface Props {
-  class?: HTMLAttributes['class'];
-  asChild?: boolean;
-}
-const props = withDefaults(defineProps<Props>(), { asChild: false });
-const classes = computed(() => cn(props.class));
+const props = defineProps<DialogTriggerProps>()
 </script>
 
 <template>
-  <DialogTrigger :as-child="asChild" :class="classes">
+  <DialogTrigger
+    data-slot="dialog-trigger"
+    v-bind="props"
+  >
     <slot />
   </DialogTrigger>
 </template>

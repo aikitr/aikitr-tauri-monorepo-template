@@ -1,30 +1,25 @@
-<script setup lang="ts">
-import { computed, inject, type ComputedRef, type HTMLAttributes } from 'vue';
-import { cn } from '../../lib/utils';
+<script lang="ts" setup>
+import type { LabelProps } from "reka-ui"
+import type { HTMLAttributes } from "vue"
+import { cn } from "../../lib/utils"
+import { Label } from "../label"
+import { useFormField } from "./useFormField"
 
-interface Props {
-  class?: HTMLAttributes['class'];
-  for?: string;
-}
-const props = defineProps<Props>();
+const props = defineProps<LabelProps & { class?: HTMLAttributes["class"] }>()
 
-const fieldContext = inject<{
-  error: ComputedRef<string | undefined>;
-} | null>('formFieldContext', null);
-
-const hasError = computed(() => !!fieldContext?.error?.value);
-
-const classes = computed(() =>
-  cn(
-    'text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70',
-    hasError.value && 'text-destructive',
-    props.class,
-  ),
-);
+const { error, formItemId } = useFormField()
 </script>
 
 <template>
-  <label :for="props.for" :class="classes">
+  <Label
+    data-slot="form-label"
+    :data-error="!!error"
+    :class="cn(
+      'data-[error=true]:text-destructive',
+      props.class,
+    )"
+    :for="formItemId"
+  >
     <slot />
-  </label>
+  </Label>
 </template>

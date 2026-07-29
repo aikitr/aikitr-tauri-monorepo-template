@@ -1,19 +1,21 @@
 <script setup lang="ts">
-import { ContextMenuSub } from 'reka-ui';
+import type { ContextMenuSubEmits, ContextMenuSubProps } from "reka-ui"
+import {
+  ContextMenuSub,
+  useForwardPropsEmits,
+} from "reka-ui"
 
-interface Props {
-  open?: boolean;
-  defaultOpen?: boolean;
-}
-defineProps<Props>();
+const props = defineProps<ContextMenuSubProps>()
+const emits = defineEmits<ContextMenuSubEmits>()
 
-const emit = defineEmits<{
-  'update:open': [value: boolean];
-}>();
+const forwarded = useForwardPropsEmits(props, emits)
 </script>
 
 <template>
-  <ContextMenuSub :open="open" :default-open="defaultOpen" @update:open="(v) => emit('update:open', v)">
+  <ContextMenuSub
+    data-slot="context-menu-sub"
+    v-bind="forwarded"
+  >
     <slot />
   </ContextMenuSub>
 </template>

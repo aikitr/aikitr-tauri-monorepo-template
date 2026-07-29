@@ -1,21 +1,17 @@
 <script setup lang="ts">
-import { computed, type HTMLAttributes } from 'vue';
-import { SelectLabel } from 'reka-ui';
-import { cn } from '../../lib/utils';
+import type { SelectLabelProps } from "reka-ui"
+import type { HTMLAttributes } from "vue"
+import { SelectLabel } from "reka-ui"
+import { cn } from "../../lib/utils"
 
-interface Props {
-  class?: HTMLAttributes['class'];
-}
-
-const props = defineProps<Props>();
-
-const classes = computed(() =>
-  cn('px-2 py-1.5 text-sm font-semibold', props.class),
-);
+const props = defineProps<SelectLabelProps & { class?: HTMLAttributes["class"] }>()
 </script>
 
 <template>
-  <SelectLabel :class="classes">
+  <SelectLabel
+    data-slot="select-label"
+    :class="cn('text-muted-foreground px-2 py-1.5 text-xs', props.class)"
+  >
     <slot />
   </SelectLabel>
 </template>

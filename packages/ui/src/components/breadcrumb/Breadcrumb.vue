@@ -1,19 +1,17 @@
-<script setup lang="ts">
-import { computed, type HTMLAttributes } from 'vue';
-import { cn } from '../../lib/utils';
+<script lang="ts" setup>
+import type { HTMLAttributes } from "vue"
 
-interface Props {
-  class?: HTMLAttributes['class'];
-}
-const props = defineProps<Props>();
-
-const classes = computed(() => cn(props.class));
+const props = defineProps<{
+  class?: HTMLAttributes["class"]
+}>()
 </script>
 
 <template>
-  <nav aria-label="breadcrumb" :class="classes">
-    <ol class="flex flex-wrap items-center gap-1.5 break-words text-sm text-muted-foreground sm:gap-2.5">
-      <slot />
-    </ol>
+  <nav
+    aria-label="breadcrumb"
+    data-slot="breadcrumb"
+    :class="props.class"
+  >
+    <slot />
   </nav>
 </template>

@@ -1,35 +1,19 @@
 <script setup lang="ts">
-import { computed, type HTMLAttributes } from 'vue';
-import { HoverCardRoot } from 'reka-ui';
-import { cn } from '../../lib/utils';
+import type { HoverCardRootEmits, HoverCardRootProps } from "reka-ui"
+import { HoverCardRoot, useForwardPropsEmits } from "reka-ui"
 
-interface Props {
-  class?: HTMLAttributes['class'];
-  open?: boolean;
-  defaultOpen?: boolean;
-  openDelay?: number;
-  closeDelay?: number;
-}
-const props = withDefaults(defineProps<Props>(), {
-  openDelay: 300,
-  closeDelay: 100,
-});
-const classes = computed(() => cn(props.class));
+const props = defineProps<HoverCardRootProps>()
+const emits = defineEmits<HoverCardRootEmits>()
 
-const emit = defineEmits<{
-  'update:open': [value: boolean];
-}>();
+const forwarded = useForwardPropsEmits(props, emits)
 </script>
 
 <template>
   <HoverCardRoot
-    :open="open"
-    :default-open="defaultOpen"
-    :open-delay="openDelay"
-    :close-delay="closeDelay"
-    :class="classes"
-    @update:open="(v) => emit('update:open', v)"
+    v-slot="slotProps"
+    data-slot="hover-card"
+    v-bind="forwarded"
   >
-    <slot />
+    <slot v-bind="slotProps" />
   </HoverCardRoot>
 </template>

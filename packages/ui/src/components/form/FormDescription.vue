@@ -1,17 +1,21 @@
-<script setup lang="ts">
-import { computed, type HTMLAttributes } from 'vue';
-import { cn } from '../../lib/utils';
+<script lang="ts" setup>
+import type { HTMLAttributes } from "vue"
+import { cn } from "../../lib/utils"
+import { useFormField } from "./useFormField"
 
-interface Props {
-  class?: HTMLAttributes['class'];
-}
-const props = defineProps<Props>();
+const props = defineProps<{
+  class?: HTMLAttributes["class"]
+}>()
 
-const classes = computed(() => cn('text-[0.8rem] text-muted-foreground', props.class));
+const { formDescriptionId } = useFormField()
 </script>
 
 <template>
-  <p :class="classes">
+  <p
+    :id="formDescriptionId"
+    data-slot="form-description"
+    :class="cn('text-muted-foreground text-sm', props.class)"
+  >
     <slot />
   </p>
 </template>

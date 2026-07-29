@@ -1,34 +1,37 @@
 <script setup lang="ts">
-import { computed, type HTMLAttributes } from 'vue';
-import { ContextMenuItem } from 'reka-ui';
-import { cn } from '../../lib/utils';
+import type { ContextMenuItemEmits, ContextMenuItemProps } from "reka-ui"
+import type { HTMLAttributes } from "vue"
+import { reactiveOmit } from "@vueuse/core"
+import {
+  ContextMenuItem,
+  useForwardPropsEmits,
+} from "reka-ui"
+import { cn } from "../../lib/utils"
 
-interface Props {
-  class?: HTMLAttributes['class'];
-  disabled?: boolean;
-  textValue?: string;
-  inset?: boolean;
-}
-const props = withDefaults(defineProps<Props>(), { disabled: false, inset: false });
-const emit = defineEmits<{ select: [event: Event] }>();
+const props = withDefaults(defineProps<ContextMenuItemProps & {
+  class?: HTMLAttributes["class"]
+  inset?: boolean
+  variant?: "default" | "destructive"
+}>(), {
+  variant: "default",
+})
+const emits = defineEmits<ContextMenuItemEmits>()
 
-const classes = computed(() =>
-  cn(
-    'relative flex cursor-pointer select-none items-center gap-2 rounded-sm px-2 py-1.5 text-sm outline-none transition-colors',
-    'focus:bg-accent focus:text-accent-foreground',
-    'data-[disabled]:pointer-events-none data-[disabled]:opacity-50',
-    props.inset && 'pl-8',
-    props.class,
-  ),
-);
+const delegatedProps = reactiveOmit(props, "class")
+
+const forwarded = useForwardPropsEmits(delegatedProps, emits)
 </script>
 
 <template>
   <ContextMenuItem
-    :disabled="disabled"
-    :text-value="textValue"
-    :class="classes"
-    @select="(e) => emit('select', e)"
+    data-slot="context-menu-item"
+    :data-inset="inset ? '' : undefined"
+    :data-variant="variant"
+    v-bind="forwarded"
+    :class="cn(
+      `focus:bg-accent focus:text-accent-foreground data-[variant=destructive]:text-destructive-foreground data-[variant=destructive]:focus:bg-destructive/10 dark:data-[variant=destructive]:focus:bg-destructive/40 data-[variant=destructive]:focus:text-destructive-foreground data-[variant=destructive]:*:[svg]:!text-destructive-foreground [&_svg:not([class*='text-'])]:text-muted-foreground relative flex cursor-default items-center gap-2 rounded-sm px-2 py-1.5 text-sm outline-hidden select-none data-[disabled]:pointer-events-none data-[disabled]:opacity-50 data-[inset]:pl-8 [&_svg]:pointer-events-none [&_svg]:shrink-0 [&_svg:not([class*='size-'])]:size-4`,
+      props.class,
+    )"
   >
     <slot />
   </ContextMenuItem>

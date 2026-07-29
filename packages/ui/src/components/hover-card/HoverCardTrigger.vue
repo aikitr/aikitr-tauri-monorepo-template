@@ -1,18 +1,15 @@
 <script setup lang="ts">
-import { computed, type HTMLAttributes } from 'vue';
-import { HoverCardTrigger } from 'reka-ui';
-import { cn } from '../../lib/utils';
+import type { HoverCardTriggerProps } from "reka-ui"
+import { HoverCardTrigger } from "reka-ui"
 
-interface Props {
-  class?: HTMLAttributes['class'];
-  asChild?: boolean;
-}
-const props = withDefaults(defineProps<Props>(), { asChild: true });
-const classes = computed(() => cn(props.class));
+const props = defineProps<HoverCardTriggerProps>()
 </script>
 
 <template>
-  <HoverCardTrigger :as-child="asChild" :class="classes">
+  <HoverCardTrigger
+    data-slot="hover-card-trigger"
+    v-bind="props"
+  >
     <slot />
   </HoverCardTrigger>
 </template>

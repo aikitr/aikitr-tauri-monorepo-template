@@ -35,7 +35,7 @@ const itemClasses = computed(() =>
 );
 
 const indentStyle = computed(() => ({
-  paddingLeft: `${props.depth * 1rem}`,
+  paddingLeft: `${props.depth}rem`,
 }));
 
 function onClick(): void {

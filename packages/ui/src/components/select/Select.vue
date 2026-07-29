@@ -1,22 +1,19 @@
 <script setup lang="ts">
-import { SelectRoot, type SelectRootEmits, type SelectRootProps } from 'reka-ui';
+import type { SelectRootEmits, SelectRootProps } from "reka-ui"
+import { SelectRoot, useForwardPropsEmits } from "reka-ui"
 
-interface Props extends SelectRootProps {}
-const props = defineProps<Props>();
+const props = defineProps<SelectRootProps>()
+const emits = defineEmits<SelectRootEmits>()
 
-const emit = defineEmits<SelectRootEmits>();
-
-function onUpdateModelValue(value: string): void {
-  emit('update:modelValue', value);
-}
-
-function onUpdateOpen(value: boolean): void {
-  emit('update:open', value);
-}
+const forwarded = useForwardPropsEmits(props, emits)
 </script>
 
 <template>
-  <SelectRoot v-bind="props" @update:model-value="onUpdateModelValue" @update:open="onUpdateOpen">
-    <slot />
+  <SelectRoot
+    v-slot="slotProps"
+    data-slot="select"
+    v-bind="forwarded"
+  >
+    <slot v-bind="slotProps" />
   </SelectRoot>
 </template>

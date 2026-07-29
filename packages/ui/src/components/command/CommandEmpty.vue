@@ -1,17 +1,27 @@
 <script setup lang="ts">
-import { computed, type HTMLAttributes } from 'vue';
-import { cn } from '../../lib/utils';
+import type { PrimitiveProps } from "reka-ui"
+import type { HTMLAttributes } from "vue"
+import { reactiveOmit } from "@vueuse/core"
+import { Primitive } from "reka-ui"
+import { computed } from "vue"
+import { cn } from "../../lib/utils"
+import { useCommand } from "."
 
-interface Props {
-  class?: HTMLAttributes['class'];
-}
-const props = defineProps<Props>();
+const props = defineProps<PrimitiveProps & { class?: HTMLAttributes["class"] }>()
 
-const classes = computed(() => cn('py-6 text-center text-sm', props.class));
+const delegatedProps = reactiveOmit(props, "class")
+
+const { filterState } = useCommand()
+const isRender = computed(() => !!filterState.search && filterState.filtered.count === 0,
+)
 </script>
 
 <template>
-  <div :class="classes" role="presentation">
-    <slot>No results found.</slot>
-  </div>
+  <Primitive
+    v-if="isRender"
+    data-slot="command-empty"
+    v-bind="delegatedProps" :class="cn('py-6 text-center text-sm', props.class)"
+  >
+    <slot />
+  </Primitive>
 </template>

@@ -28,7 +28,7 @@ export interface HttpClientOptions {
   readonly headers?: Record<string, string>;
   readonly onRequest?: (ctx: { url: string; options: FetchOptions }) => void | Promise<void>;
   readonly onResponse?: (ctx: { request: Request; response: Response }) => void | Promise<void>;
-  readonly onError?: (error: ApiError) => void | Promise<void>;
+  readonly onError?: (error: ApiError, ctx?: { url?: string }) => void | Promise<void>;
 }
 
 export class HttpClient {
@@ -42,31 +42,34 @@ export class HttpClient {
       baseURL: options.baseURL,
       timeout: options.timeout ?? 15_000,
       retry: 0,
-      onRequest: async ({ options }) => {
-        if (options.headers) {
-          options.headers = { ...options.headers, ...options.headers };
-        }
-        const url = options.baseURL ? `${options.baseURL}${options.url ?? ''}` : (options.url ?? '');
+      onRequest: async ({ request, options: fetchOpts }) => {
+        const url = typeof request === 'string' ? request : request.url;
         if (this.#options.onRequest) {
-          await this.#options.onRequest({ url, options });
+          await this.#options.onRequest({ url, options: fetchOpts });
         }
-        this.#logger.debug('http request', { url, method: options.method ?? 'GET' });
+        this.#logger.debug('http request', { url, method: fetchOpts.method ?? 'GET' });
       },
       onResponse: async ({ request, response }) => {
         if (this.#options.onResponse) {
           await this.#options.onResponse({ request, response });
         }
       },
-      onResponseError: async ({ response }) => {
-        const body = (await response._data?.catch(() => null)) as ApiErrorBody | null;
+      onResponseError: async ({ request, response }) => {
+        const url = typeof request === 'string' ? request : request.url;
+        let body: ApiErrorBody | null = null;
+        try {
+          body = (response._data ?? null) as ApiErrorBody | null;
+        } catch {
+          body = null;
+        }
         const error = new ApiError(
           body?.code ?? 'UNKNOWN',
           body?.message ?? response.statusText ?? 'Request failed',
           response.status,
           body?.details,
         );
-        if (this.#options.onError) await this.#options.onError(error);
-        this.#logger.warn('http error', { code: error.code, status: error.status });
+        if (this.#options.onError) await this.#options.onError(error, { url });
+        this.#logger.warn('http error', { code: error.code, status: error.status, url });
       },
     });
   }
@@ -88,13 +91,20 @@ export class HttpClient {
   }
 
   async tryGet<T>(url: string, options?: FetchOptions): Promise<Result<T, ApiError>> {
-    return tryAsync(() => this.get<T>(url, options));
+    try {
+      return ok(await this.get<T>(url, options));
+    } catch (e) {
+      if (e instanceof ApiError) return err(e);
+      return err(new ApiError('NETWORK', e instanceof Error ? e.message : String(e), 0));
+    }
   }
   async tryPost<T>(url: string, body?: unknown, options?: FetchOptions): Promise<Result<T, ApiError>> {
-    const result = await tryAsync(() => this.post<T>(url, body, options));
-    if (result.ok) return ok(result.value);
-    if (result.error instanceof ApiError) return err(result.error);
-    return err(new ApiError('NETWORK', result.error.message, 0));
+    try {
+      return ok(await this.post<T>(url, body, options));
+    } catch (e) {
+      if (e instanceof ApiError) return err(e);
+      return err(new ApiError('NETWORK', e instanceof Error ? e.message : String(e), 0));
+    }
   }
 }
 

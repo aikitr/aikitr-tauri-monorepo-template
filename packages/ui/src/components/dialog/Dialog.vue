@@ -1,18 +1,19 @@
 <script setup lang="ts">
-import { DialogRoot, type DialogRootEmits, type DialogRootProps } from 'reka-ui';
+import type { DialogRootEmits, DialogRootProps } from "reka-ui"
+import { DialogRoot, useForwardPropsEmits } from "reka-ui"
 
-interface Props extends DialogRootProps {}
-const props = defineProps<Props>();
+const props = defineProps<DialogRootProps>()
+const emits = defineEmits<DialogRootEmits>()
 
-const emit = defineEmits<DialogRootEmits>();
-
-function onOpenChange(open: boolean): void {
-  emit('update:open', open);
-}
+const forwarded = useForwardPropsEmits(props, emits)
 </script>
 
 <template>
-  <DialogRoot v-bind="props" @update:open="onOpenChange">
-    <slot />
+  <DialogRoot
+    v-slot="slotProps"
+    data-slot="dialog"
+    v-bind="forwarded"
+  >
+    <slot v-bind="slotProps" />
   </DialogRoot>
 </template>

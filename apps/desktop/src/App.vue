@@ -2,7 +2,7 @@
 import { onMounted } from 'vue';
 import { RouterView } from 'vue-router';
 import { useDarkMode } from '@aikitr/hooks';
-import { Toaster } from '@aikitr/ui';
+import { Toaster, TooltipProvider } from '@aikitr/ui';
 import { logger } from './services/logger';
 
 const { isDark } = useDarkMode();
@@ -14,6 +14,7 @@ onMounted(() => {
 
 <template>
   <div class="h-full" :class="{ dark: isDark }">
+    <TooltipProvider>
     <RouterView v-slot="{ Component, route }">
       <Transition name="fade" mode="out-in">
         <Suspense :key="route.path">
@@ -26,6 +27,7 @@ onMounted(() => {
         </Suspense>
       </Transition>
     </RouterView>
+    </TooltipProvider>
     <Toaster />
   </div>
 </template>

@@ -1,18 +1,12 @@
 <script setup lang="ts">
-import { computed, type HTMLAttributes } from 'vue';
-import { AlertDialogTrigger } from 'reka-ui';
-import { cn } from '../../lib/utils';
+import type { AlertDialogTriggerProps } from "reka-ui"
+import { AlertDialogTrigger } from "reka-ui"
 
-interface Props {
-  class?: HTMLAttributes['class'];
-  asChild?: boolean;
-}
-const props = withDefaults(defineProps<Props>(), { asChild: false });
-const classes = computed(() => cn(props.class));
+const props = defineProps<AlertDialogTriggerProps>()
 </script>
 
 <template>
-  <AlertDialogTrigger :as-child="asChild" :class="classes">
+  <AlertDialogTrigger data-slot="alert-dialog-trigger" v-bind="props">
     <slot />
   </AlertDialogTrigger>
 </template>

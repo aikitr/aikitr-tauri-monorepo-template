@@ -1,24 +1,23 @@
 <script setup lang="ts">
-import { computed, type HTMLAttributes } from 'vue';
-import { NavigationMenuIndicator } from 'reka-ui';
-import { cn } from '../../lib/utils';
+import type { NavigationMenuIndicatorProps } from "reka-ui"
+import type { HTMLAttributes } from "vue"
+import { reactiveOmit } from "@vueuse/core"
+import { NavigationMenuIndicator, useForwardProps } from "reka-ui"
+import { cn } from "../../lib/utils"
 
-interface Props {
-  class?: HTMLAttributes['class'];
-}
-const props = defineProps<Props>();
-const classes = computed(() =>
-  cn(
-    'top-full z-[1] flex h-1.5 items-end justify-center overflow-hidden',
-    'data-[state=visible]:animate-in data-[state=hidden]:animate-out',
-    'data-[state=hidden]:fade-out data-[state=visible]:fade-in',
-    props.class,
-  ),
-);
+const props = defineProps<NavigationMenuIndicatorProps & { class?: HTMLAttributes["class"] }>()
+
+const delegatedProps = reactiveOmit(props, "class")
+
+const forwardedProps = useForwardProps(delegatedProps)
 </script>
 
 <template>
-  <NavigationMenuIndicator :class="classes">
-    <div class="relative top-[60%] h-2 w-2 rotate-45 rounded-tl-sm bg-border shadow-md" />
+  <NavigationMenuIndicator
+    data-slot="navigation-menu-indicator"
+    v-bind="forwardedProps"
+    :class="cn('data-[state=visible]:animate-in data-[state=hidden]:animate-out data-[state=hidden]:fade-out data-[state=visible]:fade-in top-full z-[1] flex h-1.5 items-end justify-center overflow-hidden', props.class)"
+  >
+    <div class="bg-border relative top-[60%] h-2 w-2 rotate-45 rounded-tl-sm shadow-md" />
   </NavigationMenuIndicator>
 </template>

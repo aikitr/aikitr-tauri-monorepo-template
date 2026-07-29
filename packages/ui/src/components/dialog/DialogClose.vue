@@ -1,16 +1,15 @@
 <script setup lang="ts">
-import { DialogClose } from 'reka-ui';
-import { cn } from '../../lib/utils';
+import type { DialogCloseProps } from "reka-ui"
+import { DialogClose } from "reka-ui"
 
-interface Props {
-  class?: string;
-  asChild?: boolean;
-}
-const props = withDefaults(defineProps<Props>(), { asChild: true });
+const props = defineProps<DialogCloseProps>()
 </script>
 
 <template>
-  <DialogClose :as-child="asChild" :class="cn('absolute right-4 top-4', props.class)">
+  <DialogClose
+    data-slot="dialog-close"
+    v-bind="props"
+  >
     <slot />
   </DialogClose>
 </template>

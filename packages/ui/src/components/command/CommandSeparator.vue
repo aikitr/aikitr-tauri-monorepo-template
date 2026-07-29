@@ -1,15 +1,21 @@
 <script setup lang="ts">
-import { computed, type HTMLAttributes } from 'vue';
-import { cn } from '../../lib/utils';
+import type { SeparatorProps } from "reka-ui"
+import type { HTMLAttributes } from "vue"
+import { reactiveOmit } from "@vueuse/core"
+import { Separator } from "reka-ui"
+import { cn } from "../../lib/utils"
 
-interface Props {
-  class?: HTMLAttributes['class'];
-}
-const props = defineProps<Props>();
+const props = defineProps<SeparatorProps & { class?: HTMLAttributes["class"] }>()
 
-const classes = computed(() => cn('-mx-1 h-px bg-border', props.class));
+const delegatedProps = reactiveOmit(props, "class")
 </script>
 
 <template>
-  <div :class="classes" role="separator" />
+  <Separator
+    data-slot="command-separator"
+    v-bind="delegatedProps"
+    :class="cn('bg-border -mx-1 h-px', props.class)"
+  >
+    <slot />
+  </Separator>
 </template>

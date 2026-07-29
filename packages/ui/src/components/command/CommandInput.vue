@@ -1,56 +1,39 @@
 <script setup lang="ts">
-import { computed, type HTMLAttributes, inject, type Ref } from 'vue';
-import { cn } from '../../lib/utils';
+import type { ListboxFilterProps } from "reka-ui"
+import type { HTMLAttributes } from "vue"
+import { Search } from "@lucide/vue"
+import { reactiveOmit } from "@vueuse/core"
+import { ListboxFilter, useForwardProps } from "reka-ui"
+import { cn } from "../../lib/utils"
+import { useCommand } from "."
 
-interface Props {
-  class?: HTMLAttributes['class'];
-  placeholder?: string;
-  modelValue?: string;
-}
-const props = withDefaults(defineProps<Props>(), { placeholder: 'Type a command or search...' });
+defineOptions({
+  inheritAttrs: false,
+})
 
-const emit = defineEmits<{
-  'update:modelValue': [value: string];
-}>();
+const props = defineProps<ListboxFilterProps & {
+  class?: HTMLAttributes["class"]
+}>()
 
-const filterValue = inject<Ref<string>>('command-filter');
+const delegatedProps = reactiveOmit(props, "class")
 
-const classes = computed(() =>
-  cn(
-    'flex h-10 w-full rounded-md bg-transparent py-3 text-sm outline-none placeholder:text-muted-foreground disabled:cursor-not-allowed disabled:opacity-50',
-    props.class,
-  ),
-);
+const forwardedProps = useForwardProps(delegatedProps)
 
-function onInput(event: Event): void {
-  const value = (event.target as HTMLInputElement).value;
-  if (filterValue) filterValue.value = value;
-  emit('update:modelValue', value);
-}
+const { filterState } = useCommand()
 </script>
 
 <template>
-  <div class="flex items-center border-b px-3" cmdk-input-wrapper="">
-    <svg
-      xmlns="http://www.w3.org/2000/svg"
-      width="24"
-      height="24"
-      viewBox="0 0 24 24"
-      fill="none"
-      stroke="currentColor"
-      stroke-width="2"
-      stroke-linecap="round"
-      stroke-linejoin="round"
-      class="mr-2 h-4 w-4 shrink-0 opacity-50"
-    >
-      <circle cx="11" cy="11" r="8" />
-      <path d="m21 21-4.3-4.3" />
-    </svg>
-    <input
-      :class="classes"
-      :placeholder="placeholder"
-      :value="modelValue"
-      @input="onInput"
+  <div
+    data-slot="command-input-wrapper"
+    class="flex h-9 items-center gap-2 border-b px-3"
+  >
+    <Search class="size-4 shrink-0 opacity-50" />
+    <ListboxFilter
+      v-bind="{ ...forwardedProps, ...$attrs }"
+      v-model="filterState.search"
+      data-slot="command-input"
+      auto-focus
+      :class="cn('placeholder:text-muted-foreground flex h-10 w-full rounded-md bg-transparent py-3 text-sm outline-hidden disabled:cursor-not-allowed disabled:opacity-50', props.class)"
     />
   </div>
 </template>
