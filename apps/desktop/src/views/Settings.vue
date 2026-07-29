@@ -9,6 +9,8 @@ const settingsStore = useSettingsStore();
 const { settings } = storeToRefs(settingsStore);
 const { preference } = useDarkMode();
 
+const API_BASE_URL = String(import.meta.env.VITE_API_BASE_URL ?? '');
+
 function onFontSizeChange(e: Event): void {
   const v = Number((e.target as HTMLInputElement).value);
   settingsStore.setFontSize(v);
@@ -115,7 +117,7 @@ function onFontSizeChange(e: Event): void {
         <CardDescription>Override the backend endpoint.</CardDescription>
       </CardHeader>
       <CardContent>
-        <Input :model-value="String(import.meta.env.VITE_API_BASE_URL ?? '')" readonly />
+        <Input :model-value="API_BASE_URL" readonly />
       </CardContent>
     </Card>
   </div>
