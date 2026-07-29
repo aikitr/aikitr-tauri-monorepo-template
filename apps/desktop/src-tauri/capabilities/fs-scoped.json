@@ -1,0 +1,24 @@
+{
+  "$schema": "../gen/schemas/desktop-schema.json",
+  "identifier": "fs-scoped",
+  "description": "Capabilities for filesystem access. Restricted to a specific scoped directory under the app config dir.",
+  "windows": ["main"],
+  "remote": {
+    "urls": []
+  },
+  "platforms": ["windows", "macOS", "linux"],
+  "permissions": [
+    "fs:default",
+    {
+      "identifier": "fs:scope",
+      "allow": [
+        { "path": "$APPDATA/**" },
+        { "path": "$APPCONFIG/**" },
+        { "path": "$APPCACHE/**" },
+        { "path": "$DOWNLOAD/**" },
+        { "path": "$DOCUMENT/**" },
+        { "path": "$DESKTOP/**" }
+      ]
+    }
+  ]
+}

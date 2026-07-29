@@ -1,0 +1,50 @@
+# Node
+node_modules
+.pnpm-store
+
+# Build outputs
+dist
+build
+out
+*.tsbuildinfo
+
+# Vite / Vitest
+.vite
+.cache
+coverage
+.turbo
+
+# Tauri
+apps/desktop/src-tauri/target
+apps/desktop/src-tauri/gen
+apps/desktop/src-tauri/Cargo.lock
+apps/desktop/src-tauri/WixTools
+
+# IDE
+.idea
+.vscode/*
+!.vscode/extensions.json
+!.vscode/settings.json
+!.vscode/launch.json
+*.iml
+
+# OS
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# Env
+.env
+.env.local
+.env.*.local
+
+# Logs
+*.log
+npm-debug.log*
+pnpm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# Misc
+.history
+.tmp

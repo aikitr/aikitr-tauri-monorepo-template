@@ -1,0 +1,52 @@
+{
+  "$schema": "../gen/schemas/desktop-schema.json",
+  "identifier": "default",
+  "description": "Default capabilities for the main window. Least-privilege by default — extend with named windows for additional surfaces.",
+  "windows": ["main"],
+  "remote": {
+    "urls": []
+  },
+  "platforms": ["windows", "macOS", "linux"],
+  "permissions": [
+    "core:default",
+    "core:window:default",
+    "core:window:allow-start-dragging",
+    "core:webview:default",
+    "core:event:default",
+    "core:app:default",
+    "core:path:default",
+
+    "store:default",
+    "store:allow-get",
+    "store:allow-set",
+    "store:allow-save",
+    "store:allow-load",
+    "store:allow-delete",
+    "store:allow-entries",
+    "store:allow-keys",
+    "store:allow-values",
+    "store:allow-clear",
+
+    "log:default",
+
+    "dialog:default",
+    "dialog:allow-open",
+    "dialog:allow-save",
+    "dialog:allow-message",
+    "dialog:allow-ask",
+
+    "os:default",
+    "os:allow-platform",
+    "os:allow-version",
+    "os:allow-locale",
+
+    "shell:default",
+    "shell:allow-open",
+
+    "window-state:default",
+
+    "updater:default",
+
+    "http:default"
+  ]
+}
