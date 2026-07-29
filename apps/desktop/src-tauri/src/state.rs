@@ -1,18 +1,15 @@
-use std::sync::Arc;
 use tauri::AppHandle;
-use tokio::sync::Mutex;
 
 /// Process-wide application state. Anything held here must be `Send + Sync`.
+///
+/// Note: SQLite access is handled by `tauri-plugin-sql` (managed via Tauri's
+/// plugin state), so we don't hold a raw connection here.
 pub struct AppState {
     pub app_handle: AppHandle,
-    pub db: Arc<Mutex<Option<rusqlite::Connection>>>,
 }
 
 impl AppState {
     pub fn new(app_handle: AppHandle) -> Self {
-        Self {
-            app_handle,
-            db: Arc::new(Mutex::new(None)),
-        }
+        Self { app_handle }
     }
 }
