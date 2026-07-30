@@ -34,9 +34,7 @@ function onToggle(id: string): void {
   emit('toggle', id);
 }
 
-const classes = computed(() =>
-  cn('text-sm', props.class),
-);
+const classes = computed(() => cn('text-sm', props.class));
 </script>
 
 <template>

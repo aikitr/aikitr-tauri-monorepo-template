@@ -15,18 +15,20 @@ onMounted(() => {
 <template>
   <div class="h-full" :class="{ dark: isDark }">
     <TooltipProvider>
-    <RouterView v-slot="{ Component, route }">
-      <Transition name="fade" mode="out-in">
-        <Suspense :key="route.path">
-          <component :is="Component" />
-          <template #fallback>
-            <div class="flex h-full items-center justify-center">
-              <div class="size-8 animate-spin rounded-full border-2 border-primary border-t-transparent" />
-            </div>
-          </template>
-        </Suspense>
-      </Transition>
-    </RouterView>
+      <RouterView v-slot="{ Component, route }">
+        <Transition name="fade" mode="out-in">
+          <Suspense :key="route.path">
+            <component :is="Component" />
+            <template #fallback>
+              <div class="flex h-full items-center justify-center">
+                <div
+                  class="size-8 animate-spin rounded-full border-2 border-primary border-t-transparent"
+                />
+              </div>
+            </template>
+          </Suspense>
+        </Transition>
+      </RouterView>
     </TooltipProvider>
     <Toaster />
   </div>

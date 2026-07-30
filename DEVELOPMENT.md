@@ -1,22 +1,24 @@
 # Development Guide
 
-This guide walks you through contributing to the Aikitr monorepo — from
-local setup to releasing a desktop build.
+This guide walks you through contributing to the Aikitr monorepo — from local
+setup to releasing a desktop build.
 
 ## Prerequisites
 
-| Tool       | Version  | Notes                                       |
-| ---------- | -------- | ------------------------------------------- |
-| Node.js    | ≥ 20.11  | Use `nvm` to match `.nvmrc`                 |
-| pnpm       | ≥ 9      | `corepack enable && corepack prepare pnpm@9.12.0 --activate` |
-| Rust       | ≥ 1.77.2 | Install via [rustup](https://rustup.rs)     |
-| Tauri CLI  | bundled  | Installed transitively via `pnpm install`    |
+| Tool      | Version  | Notes                                                        |
+| --------- | -------- | ------------------------------------------------------------ |
+| Node.js   | ≥ 20.11  | Use `nvm` to match `.nvmrc`                                  |
+| pnpm      | ≥ 9      | `corepack enable && corepack prepare pnpm@9.12.0 --activate` |
+| Rust      | ≥ 1.77.2 | Install via [rustup](https://rustup.rs)                      |
+| Tauri CLI | bundled  | Installed transitively via `pnpm install`                    |
 
 Platform-specific build tools:
 
 - **Windows**: Visual Studio Build Tools with "Desktop development with C++".
 - **macOS**: Xcode Command Line Tools (`xcode-select --install`).
-- **Linux**: see [`apps/desktop/src-tauri/.cargo/config.toml`](apps/desktop/src-tauri/.cargo/config.toml) for required `apt` packages.
+- **Linux**: see
+  [`apps/desktop/src-tauri/.cargo/config.toml`](apps/desktop/src-tauri/.cargo/config.toml)
+  for required `apt` packages.
 
 ## First-time setup
 
@@ -29,8 +31,8 @@ pnpm install
 pnpm dev:desktop
 ```
 
-The first run is slow because Cargo compiles the entire Tauri dependency
-graph. Subsequent runs are fast.
+The first run is slow because Cargo compiles the entire Tauri dependency graph.
+Subsequent runs are fast.
 
 ## Daily workflow
 
@@ -47,8 +49,8 @@ pnpm build:desktop      # Release bundle for the host platform
 
 - **TypeScript strict mode** is mandatory. The base `tsconfig` enables
   `noUncheckedIndexedAccess`, `exactOptionalPropertyTypes`,
-  `noImplicitOverride`. Avoid `any`. If you really need it, the lint rule
-  will block the PR.
+  `noImplicitOverride`. Avoid `any`. If you really need it, the lint rule will
+  block the PR.
 - **Vue 3.5 Composition API with `<script setup lang="ts">`** for every
   component. Components are capped at ~300 lines — split when necessary.
 - **Pinia setup stores** only. No Options-store style.
@@ -69,8 +71,9 @@ pnpm build:desktop      # Release bundle for the host platform
    </template>
    ```
 
-2. Register the route in [`apps/desktop/src/router/routes.ts`](apps/desktop/src/router/routes.ts)
-   with a `meta: { title }` object.
+2. Register the route in
+   [`apps/desktop/src/router/routes.ts`](apps/desktop/src/router/routes.ts) with
+   a `meta: { title }` object.
 
 3. The layout will pick it up automatically.
 
@@ -89,15 +92,15 @@ pnpm build:desktop      # Release bundle for the host platform
 mkdir -p packages/<name>/src
 ```
 
-Create `packages/<name>/package.json` with `"name": "@aikitr/<name>"` and
-add `workspace:*` to the desktop's `dependencies` in
-[`apps/desktop/package.json`](apps/desktop/package.json). The package is
-picked up automatically by `pnpm-workspace.yaml`.
+Create `packages/<name>/package.json` with `"name": "@aikitr/<name>"` and add
+`workspace:*` to the desktop's `dependencies` in
+[`apps/desktop/package.json`](apps/desktop/package.json). The package is picked
+up automatically by `pnpm-workspace.yaml`.
 
 ## Theming
 
-- Tokens live in `packages/ui/src/styles/index.css` and are exposed as
-  CSS variables on `:root` and `.dark`.
+- Tokens live in `packages/ui/src/styles/index.css` and are exposed as CSS
+  variables on `:root` and `.dark`.
 - Add a new token there; reference it from Tailwind via
   `hsl(var(--my-token) / <alpha-value>)` in
   [`apps/desktop/tailwind.config.ts`](apps/desktop/tailwind.config.ts).
@@ -137,8 +140,8 @@ git tag v0.1.0
 git push origin v0.1.0
 ```
 
-The `release.yml` workflow builds Windows, macOS, and Linux bundles and
-drafts a GitHub release. Configure signing credentials in
+The `release.yml` workflow builds Windows, macOS, and Linux bundles and drafts a
+GitHub release. Configure signing credentials in
 `Settings → Secrets and variables → Actions` before tagging.
 
 ## Troubleshooting
@@ -150,10 +153,9 @@ We use `auto-install-peers=true`. If a peer is missing, run
 
 ### Tauri command not found in dev
 
-Make sure the command is registered in
-`tauri::generate_handler![...]` in `lib.rs`, and that
-`apps/desktop/src-tauri/tauri.conf.json` is saved (Tauri re-reads it on
-every `tauri dev` start).
+Make sure the command is registered in `tauri::generate_handler![...]` in
+`lib.rs`, and that `apps/desktop/src-tauri/tauri.conf.json` is saved (Tauri
+re-reads it on every `tauri dev` start).
 
 ### CSP blocks an external resource
 

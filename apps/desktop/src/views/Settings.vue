@@ -1,7 +1,17 @@
 <script setup lang="ts">
 import { storeToRefs } from 'pinia';
 import { useSettingsStore } from '@/stores/settings';
-import { Card, CardHeader, CardTitle, CardDescription, CardContent, Label, Input, Switch, Separator } from '@aikitr/ui';
+import {
+  Card,
+  CardHeader,
+  CardTitle,
+  CardDescription,
+  CardContent,
+  Label,
+  Input,
+  Switch,
+  Separator,
+} from '@aikitr/ui';
 import { useDarkMode } from '@aikitr/hooks';
 import { logger } from '@/services/logger';
 
@@ -35,7 +45,7 @@ function onFontSizeChange(e: Event): void {
           <Label for="theme-pref">Theme</Label>
           <div class="grid grid-cols-3 gap-2">
             <button
-              v-for="opt in (['light', 'dark', 'system'] as const)"
+              v-for="opt in ['light', 'dark', 'system'] as const"
               :key="opt"
               class="rounded-md border border-border bg-background px-3 py-2 text-sm capitalize transition-colors hover:bg-accent"
               :class="{ 'ring-2 ring-ring': preference === opt }"
@@ -73,7 +83,12 @@ function onFontSizeChange(e: Event): void {
             id="locale"
             :value="settings.locale"
             class="flex h-9 w-full rounded-md border border-input bg-background px-3 py-1 text-sm shadow-sm"
-            @change="(e) => settingsStore.setLocale(((e.target as HTMLSelectElement).value) as typeof settings.locale)"
+            @change="
+              (e) =>
+                settingsStore.setLocale(
+                  (e.target as HTMLSelectElement).value as typeof settings.locale,
+                )
+            "
           >
             <option value="en-US">English (United States)</option>
             <option value="zh-CN">中文 (中国)</option>

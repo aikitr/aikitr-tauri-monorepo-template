@@ -115,7 +115,17 @@ export function initTheme(): void {
 
   // expose theme helpers on window for debug/dev buttons
   if (typeof window !== 'undefined') {
-    (window as unknown as { __aikitrTheme?: { isDark: () => boolean; toggle: () => void; scheme: () => ColorScheme; preference: () => StoredTheme; setPreference: (p: ThemeMode) => void } }).__aikitrTheme = {
+    (
+      window as unknown as {
+        __aikitrTheme?: {
+          isDark: () => boolean;
+          toggle: () => void;
+          scheme: () => ColorScheme;
+          preference: () => StoredTheme;
+          setPreference: (p: ThemeMode) => void;
+        };
+      }
+    ).__aikitrTheme = {
       isDark: () => isDark.value,
       toggle,
       scheme: () => scheme.value,

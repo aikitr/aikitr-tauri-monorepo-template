@@ -1,5 +1,12 @@
 import { camelToKebab, kebabToCamel } from '@aikitr/utils';
-export { camelToKebab, kebabToCamel, formatBytes, formatDateTime, fromNow, clamp } from '@aikitr/utils';
+export {
+  camelToKebab,
+  kebabToCamel,
+  formatBytes,
+  formatDateTime,
+  fromNow,
+  clamp,
+} from '@aikitr/utils';
 
 export function debounce<TArgs extends readonly unknown[]>(
   fn: (...args: TArgs) => void,

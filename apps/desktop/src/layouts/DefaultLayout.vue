@@ -51,14 +51,18 @@ const breadcrumbs = computed(() => {
           <component :is="Component" />
           <template #fallback>
             <div class="flex h-full items-center justify-center">
-              <div class="size-6 animate-spin rounded-full border-2 border-primary border-t-transparent" />
+              <div
+                class="size-6 animate-spin rounded-full border-2 border-primary border-t-transparent"
+              />
             </div>
           </template>
         </Suspense>
       </RouterView>
     </main>
 
-    <footer class="flex h-8 shrink-0 items-center justify-between border-t border-border px-4 text-xs text-muted-foreground">
+    <footer
+      class="flex h-8 shrink-0 items-center justify-between border-t border-border px-4 text-xs text-muted-foreground"
+    >
       <span>v{{ info?.version ?? '0.0.0' }}</span>
       <span>{{ settings.locale }}</span>
     </footer>

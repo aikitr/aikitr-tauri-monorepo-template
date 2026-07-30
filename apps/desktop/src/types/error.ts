@@ -27,12 +27,7 @@ export class AppError extends Error {
       return new AppError(error.code, error.message, 0, error.details);
     }
     if (error instanceof ApiError) {
-      return new AppError(
-        error.code as ErrorCode,
-        error.message,
-        error.status,
-        error.details,
-      );
+      return new AppError(error.code as ErrorCode, error.message, error.status, error.details);
     }
     if (error instanceof Error) return new AppError('UNKNOWN', error.message);
     return new AppError('UNKNOWN', String(error));
