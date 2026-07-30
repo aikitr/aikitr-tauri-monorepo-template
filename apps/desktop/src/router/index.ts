@@ -1,8 +1,6 @@
 import { createRouter, createWebHashHistory } from 'vue-router';
 import { routes } from './routes';
 import { logger } from '@/services/logger';
-import { useTitle } from '@aikitr/hooks';
-
 export const router = createRouter({
   history: createWebHashHistory(),
   routes,

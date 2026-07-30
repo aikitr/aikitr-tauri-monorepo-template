@@ -1,4 +1,3 @@
-import { camelToKebab, kebabToCamel } from '@aikitr/utils';
 export {
   camelToKebab,
   kebabToCamel,

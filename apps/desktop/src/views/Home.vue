@@ -47,10 +47,10 @@ function onClickPing(): void {
       <h2 class="mb-4 text-lg font-semibold">Quick actions</h2>
       <div class="flex flex-wrap gap-3">
         <Button @click="onClickPing">Trigger toast</Button>
-        <Button variant="outline" @click="settings.setAutoUpdate(!settings.autoUpdate)">
+        <Button variant="outline" @click="settingsStore.setAutoUpdate(!settings.autoUpdate)">
           Toggle auto-update
         </Button>
-        <Button variant="ghost" @click="settings.reset()">Reset settings</Button>
+        <Button variant="ghost" @click="settingsStore.reset()">Reset settings</Button>
       </div>
     </section>
 

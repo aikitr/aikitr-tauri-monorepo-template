@@ -20,7 +20,7 @@ export const useAppStore = defineStore('app', () => {
       ]);
       if (infoResult) {
         info.value = infoResult;
-        logger.info('app info loaded', infoResult);
+        logger.info('app info loaded', infoResult as unknown as Record<string, unknown>);
       }
       platform.value = platformResult;
     } catch (e) {

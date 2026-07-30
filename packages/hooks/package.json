@@ -15,7 +15,7 @@
   ],
   "scripts": {
     "typecheck": "vue-tsc --noEmit",
-    "test": "vitest run",
+    "test": "vitest run --passWithNoTests",
     "build": "vue-tsc -p tsconfig.build.json --emitDeclarationOnly --declaration"
   },
   "peerDependencies": {
