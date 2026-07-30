@@ -1,6 +1,6 @@
 {
   "name": "aikitr",
-  "version": "0.1.6",
+  "version": "0.1.7",
   "private": true,
   "description": "Aikitr monorepo — enterprise Tauri 2 + Vue 3 desktop application template.",
   "packageManager": "pnpm@11.13.0",
@@ -19,6 +19,8 @@
     "build": "pnpm -r --filter=\"./packages/*\" run build && pnpm --filter=@aikitr/desktop run build",
     "dev:desktop": "pnpm --filter=@aikitr/desktop run dev",
     "build:desktop": "pnpm --filter=@aikitr/desktop run tauri:build",
+    "keygen:desktop": "pnpm --filter=@aikitr/desktop run tauri:keygen",
+    "icon:desktop": "pnpm --filter=@aikitr/desktop run tauri:icon",
     "clean": "pnpm -r exec rimraf dist node_modules .turbo .cache"
   },
   "devDependencies": {

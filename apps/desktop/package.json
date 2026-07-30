@@ -11,6 +11,8 @@
     "tauri": "tauri",
     "tauri:dev": "tauri dev",
     "tauri:build": "tauri build",
+    "tauri:keygen": "tauri signer generate -w ./.tauri/private.key",
+    "tauri:icon": "tauri icon ./src-tauri/icons/icon.png",
     "typecheck": "vue-tsc --noEmit -p tsconfig.app.json --composite false",
     "test": "vitest run",
     "test:watch": "vitest",
