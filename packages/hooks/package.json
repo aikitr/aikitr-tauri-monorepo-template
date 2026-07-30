@@ -10,7 +10,9 @@
   "exports": {
     ".": "./src/index.ts"
   },
-  "files": ["src"],
+  "files": [
+    "src"
+  ],
   "scripts": {
     "typecheck": "vue-tsc --noEmit",
     "test": "vitest run",
@@ -23,7 +25,9 @@
     "@aikitr/utils": "workspace:*"
   },
   "devDependencies": {
+    "@vitejs/plugin-vue": "^5.1.2",
     "@vue/test-utils": "^2.4.6",
+    "jsdom": "^24.1.1",
     "typescript": "^5.5.4",
     "vitest": "^2.0.5",
     "vue": "^3.5.0",

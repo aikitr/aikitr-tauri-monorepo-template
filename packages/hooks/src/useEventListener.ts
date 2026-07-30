@@ -1,4 +1,4 @@
-import { onBeforeUnmount, unref, type Ref } from 'vue';
+import { onBeforeUnmount, unref, watch, type Ref } from 'vue';
 
 export function useEventListener<K extends keyof WindowEventMap>(
   target: Window | Document | HTMLElement | Ref<HTMLElement | null | undefined> | null,
@@ -18,9 +18,9 @@ export function useEventListener<K extends keyof WindowEventMap>(
   if (typeof target === 'object' && target !== null && 'value' in target) {
     watch(
       () => unref(target),
-      (el) => {
+      (el: HTMLElement | null | undefined) => {
         cleanup?.();
-        attach(el as HTMLElement | null);
+        attach(el ?? null);
       },
       { immediate: true, flush: 'post' },
     );

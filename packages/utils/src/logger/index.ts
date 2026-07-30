@@ -56,7 +56,7 @@ export class Logger {
     this.#timestamp = options.timestamp ?? (() => new Date().toISOString());
   }
 
-  child(scope: string, extra?: LogContext): Logger {
+  child(scope: string, _extra?: LogContext): Logger {
     const childLogger = new Logger({
       minLevel: this.#minLevelToName(),
       scope: this.#scope ? `${this.#scope}:${scope}` : scope,

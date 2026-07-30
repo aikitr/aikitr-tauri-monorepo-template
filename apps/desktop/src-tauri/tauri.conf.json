@@ -39,7 +39,7 @@
   },
   "bundle": {
     "active": true,
-    "targets": ["app", "nsis", "msi", "deb", "appimage", "updater"],
+    "targets": "all",
     "icon": [
       "icons/32x32.png",
       "icons/128x128.png",
@@ -91,9 +91,7 @@
     "updater": {
       "active": true,
       "dialog": true,
-      "endpoints": [
-        "https://releases.aikitr.example.com/{{target}}/{{arch}}/{{current_version}}"
-      ],
+      "endpoints": ["https://releases.aikitr.example.com/{{target}}/{{arch}}/{{current_version}}"],
       "pubkey": "dW50cnVzdGVkIGNvbW1lbnQ6IG1pbmlzaWduIHB1YmxpYyBrZXk6IDhCNUJCRUY0MUI5NDcwOTIKUldTU2NKUWI5TDViaXdEQlhkNDUrMzkwK3hOY3I2Qmp6V08wc3ZjWDdDd0VmTlBtaXhhaG84T20K",
       "windows": {
         "installMode": "passive"

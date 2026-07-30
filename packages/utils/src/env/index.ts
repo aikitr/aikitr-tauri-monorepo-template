@@ -1,3 +1,5 @@
+/// <reference types="vite/client" />
+
 export function isProd(): boolean {
   return import.meta.env?.MODE === 'production';
 }

@@ -1,4 +1,4 @@
-import { ref, watch, type Ref } from 'vue';
+import { watch } from 'vue';
 
 export function useThrottleFn<TArgs extends readonly unknown[]>(
   fn: (...args: TArgs) => unknown,

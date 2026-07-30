@@ -1,4 +1,3 @@
-<script setup lang="ts">
 import { describe, it, expect, beforeEach } from 'vitest';
 import { mount } from '@vue/test-utils';
 import ThemeToggle from './ThemeToggle.vue';

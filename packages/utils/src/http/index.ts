@@ -1,5 +1,5 @@
 import { ofetch, type $Fetch, type FetchOptions } from 'ofetch';
-import { type Result, ok, err, tryAsync } from '../result';
+import { type Result, ok, err } from '../result';
 import { getLogger } from '../logger';
 
 export interface ApiErrorBody {
@@ -51,7 +51,7 @@ export class HttpClient {
       },
       onResponse: async ({ request, response }) => {
         if (this.#options.onResponse) {
-          await this.#options.onResponse({ request, response });
+          await this.#options.onResponse({ request: request as Request, response });
         }
       },
       onResponseError: async ({ request, response }) => {
@@ -75,19 +75,34 @@ export class HttpClient {
   }
 
   get<T>(url: string, options?: FetchOptions): Promise<T> {
-    return this.#fetch<T>(url, { ...options, method: 'GET' });
+    return this.#fetch<T>(url, { ...options, method: 'GET', responseType: 'json' });
   }
   post<T>(url: string, body?: unknown, options?: FetchOptions): Promise<T> {
-    return this.#fetch<T>(url, { ...options, method: 'POST', body });
+    return this.#fetch<T>(url, {
+      ...options,
+      method: 'POST',
+      body: body as BodyInit | Record<string, unknown> | undefined,
+      responseType: 'json',
+    });
   }
   put<T>(url: string, body?: unknown, options?: FetchOptions): Promise<T> {
-    return this.#fetch<T>(url, { ...options, method: 'PUT', body });
+    return this.#fetch<T>(url, {
+      ...options,
+      method: 'PUT',
+      body: body as BodyInit | Record<string, unknown> | undefined,
+      responseType: 'json',
+    });
   }
   patch<T>(url: string, body?: unknown, options?: FetchOptions): Promise<T> {
-    return this.#fetch<T>(url, { ...options, method: 'PATCH', body });
+    return this.#fetch<T>(url, {
+      ...options,
+      method: 'PATCH',
+      body: body as BodyInit | Record<string, unknown> | undefined,
+      responseType: 'json',
+    });
   }
   delete<T>(url: string, options?: FetchOptions): Promise<T> {
-    return this.#fetch<T>(url, { ...options, method: 'DELETE' });
+    return this.#fetch<T>(url, { ...options, method: 'DELETE', responseType: 'json' });
   }
 
   async tryGet<T>(url: string, options?: FetchOptions): Promise<Result<T, ApiError>> {
@@ -98,7 +113,11 @@ export class HttpClient {
       return err(new ApiError('NETWORK', e instanceof Error ? e.message : String(e), 0));
     }
   }
-  async tryPost<T>(url: string, body?: unknown, options?: FetchOptions): Promise<Result<T, ApiError>> {
+  async tryPost<T>(
+    url: string,
+    body?: unknown,
+    options?: FetchOptions,
+  ): Promise<Result<T, ApiError>> {
     try {
       return ok(await this.post<T>(url, body, options));
     } catch (e) {
