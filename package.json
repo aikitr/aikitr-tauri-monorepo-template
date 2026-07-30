@@ -1,6 +1,6 @@
 {
   "name": "aikitr",
-  "version": "0.1.3",
+  "version": "0.1.4",
   "private": true,
   "description": "Aikitr monorepo — enterprise Tauri 2 + Vue 3 desktop application template.",
   "packageManager": "pnpm@11.13.0",

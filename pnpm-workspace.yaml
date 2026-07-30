@@ -12,4 +12,5 @@ minimumReleaseAge: 0
 # 在 allowBuilds 中显式置为 true 放行，否则 pnpm install 以 ERR_PNPM_IGNORED_BUILDS 退出码 1 失败。
 allowBuilds:
   esbuild: true
+  maplibre-gl: true
   vue-demi: true

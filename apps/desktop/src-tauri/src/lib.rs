@@ -14,11 +14,6 @@ pub use error::{AppError, AppResult};
 
 #[cfg_attr(mobile, tauri::mobile_entry_point)]
 pub fn run() {
-    // Init logging early so plugin loading logs are captured.
-    let _ = tauri_plugin_log::Builder::new()
-        .level(log::LevelFilter::Info)
-        .build();
-
     tauri::Builder::default()
         .plugin(tauri_plugin_log::Builder::new().build())
         .plugin(tauri_plugin_store::Builder::new().build())
