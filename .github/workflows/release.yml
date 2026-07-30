@@ -63,6 +63,9 @@ jobs:
         uses: tauri-apps/tauri-action@v0
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          # Updater signing key (generate via `tauri signer generate`).
+          # Set this as a GitHub Secret; never commit the private key.
+          TAURI_SIGNING_PRIVATE_KEY: ${{ secrets.TAURI_SIGNING_PRIVATE_KEY }}
         with:
           projectPath: apps/desktop
           tagName: ${{ github.ref_name }}

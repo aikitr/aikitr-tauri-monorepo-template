@@ -18,6 +18,8 @@ coverage
 apps/desktop/src-tauri/target
 apps/desktop/src-tauri/gen
 apps/desktop/src-tauri/WixTools
+# Tauri updater signing private key (keep local only, never commit)
+apps/desktop/.tauri/
 
 # IDE
 .idea
