@@ -56,7 +56,6 @@
     "resources": [],
     "externalBin": [],
     "copyright": "Copyright © 2026 Aikitr",
-    "licenseFile": "../../LICENSE",
     "macOS": {
       "frameworks": [],
       "minimumSystemVersion": "10.15",
