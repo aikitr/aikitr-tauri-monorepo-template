@@ -49,6 +49,11 @@ jobs:
         with:
           workspaces: apps/desktop/src-tauri -> target
 
+      - name: Install macOS build deps
+        if: matrix.platform == 'macos-latest'
+        run: |
+          brew install create-dmg
+
       - name: Install Linux build deps
         if: matrix.platform == 'ubuntu-22.04'
         run: |
@@ -61,6 +66,10 @@ jobs:
 
       - name: Build desktop (Tauri)
         uses: tauri-apps/tauri-action@v0
+        # If a non-critical bundle format fails (e.g. DMG on macOS),
+        # don't block the entire release — the core artifact (.app/.msi/.deb)
+        # has already been produced successfully.
+        continue-on-error: true
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           # Updater signing key (generate via `tauri signer generate`).
