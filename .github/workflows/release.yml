@@ -64,7 +64,7 @@ jobs:
 
       - name: Build desktop (Tauri)
         id: tauri-build
-        uses: tauri-apps/tauri-action@v0
+        uses: tauri-apps/tauri-action@v1
         # If a non-critical bundle format fails (e.g. DMG on macOS),
         # don't block the entire release — the core artifact (.app/.msi/.deb)
         # has already been produced successfully.
