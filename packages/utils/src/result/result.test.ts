@@ -11,11 +11,11 @@ describe('Result', () => {
     expect(() => unwrap(err(new Error('boom')))).toThrow('boom');
   });
   it('tryAsync returns ok on success', async () => {
-    const r = await tryAsync(async () => 1);
+    const r = await tryAsync(() => 1);
     expect(isOk(r)).toBe(true);
   });
   it('tryAsync returns err on throw', async () => {
-    const r = await tryAsync(async () => {
+    const r = await tryAsync(() => {
       throw new Error('nope');
     });
     expect(isErr(r)).toBe(true);

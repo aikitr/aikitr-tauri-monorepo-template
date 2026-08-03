@@ -11,10 +11,10 @@ export function getLogger(): Logger {
   return _logger;
 }
 
-export const logger = new Proxy({} as Logger, {
+export const logger: Logger = new Proxy({} as Logger, {
   get(_target, prop) {
     const l = getLogger();
-    const value = Reflect.get(l, prop, l);
+    const value: unknown = Reflect.get(l, prop, l);
     return typeof value === 'function' ? (value as (...a: unknown[]) => unknown).bind(l) : value;
   },
 });

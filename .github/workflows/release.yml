@@ -28,7 +28,7 @@ jobs:
             args: "--bundles deb,appimage"
           - platform: windows-latest
             target: x86_64-pc-windows-msvc
-            args: "--bundles nsis"
+            args: "--bundles nsis,nsis-portable"
 
     runs-on: ${{ matrix.platform }}
     steps:

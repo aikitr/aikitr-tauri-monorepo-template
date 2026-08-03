@@ -13,7 +13,7 @@ function readInitialStored(defaultValue: StoredTheme): StoredTheme {
   try {
     const raw = localStorage.getItem(STORAGE_KEY);
     if (raw === null) return defaultValue;
-    const parsed = JSON.parse(raw);
+    const parsed: unknown = JSON.parse(raw);
     if (parsed === 'light' || parsed === 'dark' || parsed === 'system') return parsed;
   } catch {
     /* ignore */
@@ -90,9 +90,8 @@ export function initTheme(): void {
 
   // React to changes and apply to DOM immediately.
   effect(() => {
-    // trigger reactive tracking
-    // eslint-disable-next-line no-unused-expressions
-    isDark.value;
+    // trigger reactive tracking by reading isDark.value
+    void isDark.value;
     applyTheme();
   });
 

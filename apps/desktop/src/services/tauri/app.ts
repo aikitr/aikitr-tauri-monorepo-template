@@ -18,7 +18,7 @@ export const tauriApp = {
       name: data.name,
       version: data.version,
       env: (data.env as AppInfo['env']) ?? 'production',
-      platform: ((await tauriApp.getPlatform()) as AppPlatform) ?? 'linux',
+      platform: (await tauriApp.getPlatform()) ?? 'linux',
       locale: typeof navigator !== 'undefined' ? navigator.language : 'en-US',
     };
   },

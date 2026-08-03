@@ -56,7 +56,7 @@ export class HttpClient {
       },
       onResponseError: async ({ request, response }) => {
         const url = typeof request === 'string' ? request : request.url;
-        let body: ApiErrorBody | null = null;
+        let body: ApiErrorBody | null;
         try {
           body = (response._data ?? null) as ApiErrorBody | null;
         } catch {

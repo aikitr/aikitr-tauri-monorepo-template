@@ -10,9 +10,8 @@ export function useEventListener<K extends keyof WindowEventMap>(
 
   const attach = (el: Window | Document | HTMLElement | null): void => {
     if (!el) return;
-    const listener = handler as EventListener;
-    el.addEventListener(event, listener, options);
-    cleanup = () => el.removeEventListener(event, listener, options);
+    el.addEventListener(event, handler, options);
+    cleanup = () => el.removeEventListener(event, handler, options);
   };
 
   if (typeof target === 'object' && target !== null && 'value' in target) {
@@ -25,7 +24,7 @@ export function useEventListener<K extends keyof WindowEventMap>(
       { immediate: true, flush: 'post' },
     );
   } else {
-    attach(target as Window | Document | HTMLElement | null);
+    attach(target);
   }
 
   onBeforeUnmount(() => cleanup?.());

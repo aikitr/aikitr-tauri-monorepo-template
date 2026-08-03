@@ -8,7 +8,7 @@ export function deepClone<T>(value: T): T {
 export function deepFreeze<T>(value: T): T {
   if (value && typeof value === 'object' && !Object.isFrozen(value)) {
     Object.freeze(value);
-    for (const key of Object.keys(value as object)) {
+    for (const key of Object.keys(value)) {
       const v = (value as Record<string, unknown>)[key];
       if (v && typeof v === 'object') deepFreeze(v);
     }

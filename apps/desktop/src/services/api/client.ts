@@ -10,7 +10,7 @@ export function initApiClient(options: { baseURL?: string } = {}): HttpClient {
     baseURL: options.baseURL ?? '/api',
     timeout: 15_000,
     onRequest: async ({ options: opts }) => {
-      const headers = new Headers(opts.headers as HeadersInit | undefined);
+      const headers = new Headers(opts.headers);
       headers.set('X-Client', 'aikitr-desktop');
       headers.set('X-Platform', await getPlatformSafe());
       opts.headers = headers;

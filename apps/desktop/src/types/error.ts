@@ -9,11 +9,11 @@ import { ApiError } from '@aikitr/utils';
 export type { ErrorPayload, ErrorCode };
 
 export class AppError extends Error {
-  readonly code: ErrorCode | string;
+  readonly code: string;
   readonly status: number;
   readonly details: unknown;
 
-  constructor(code: ErrorCode | string, message: string, status = 0, details?: unknown) {
+  constructor(code: string, message: string, status = 0, details?: unknown) {
     super(message);
     this.name = 'AppError';
     this.code = code;
@@ -24,14 +24,14 @@ export class AppError extends Error {
   static from(error: unknown): AppError {
     if (error instanceof AppError) return error;
     if (error instanceof BusinessError) {
-      return new AppError(error.code, error.message, 0, error.details as unknown);
+      return new AppError(error.code, error.message, 0, error.details);
     }
     if (error instanceof ApiError) {
       return new AppError(
-        error.code as ErrorCode,
+        error.code,
         error.message,
         error.status,
-        error.details as unknown,
+        error.details,
       );
     }
     if (error instanceof Error) return new AppError('UNKNOWN', error.message);
