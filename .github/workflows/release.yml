@@ -88,22 +88,23 @@ jobs:
         id: portable
         shell: pwsh
         run: |
-          $ProductName = "Aikitr Desktop"
+          $BinaryName = "aikitr-desktop"
+          $DisplayName = "Aikitr Desktop"
           $Version = "${{ github.ref_name }}".TrimStart("v")
           $TargetDir = "apps/desktop/src-tauri/target/x86_64-pc-windows-msvc/release"
-          $ExePath = Join-Path $TargetDir "$ProductName.exe"
+          $ExePath = Join-Path $TargetDir "$BinaryName.exe"
           if (-not (Test-Path $ExePath)) {
             $TargetDir = "apps/desktop/src-tauri/target/release"
-            $ExePath = Join-Path $TargetDir "$ProductName.exe"
+            $ExePath = Join-Path $TargetDir "$BinaryName.exe"
           }
           if (-not (Test-Path $ExePath)) {
             Write-Error "Cannot find portable exe at $ExePath"
             exit 1
           }
           $Stage = "portable-stage"
-          $AppDir = Join-Path $Stage $ProductName
+          $AppDir = Join-Path $Stage $DisplayName
           New-Item -ItemType Directory -Force -Path $AppDir | Out-Null
-          Copy-Item $ExePath -Destination (Join-Path $AppDir "$ProductName.exe")
+          Copy-Item $ExePath -Destination (Join-Path $AppDir "$DisplayName.exe")
           # Copy any sidecar DLLs / PDBs that sit next to the exe
           Get-ChildItem $TargetDir -File | Where-Object {
             $_.Extension -in ".dll", ".pdb"
