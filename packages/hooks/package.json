@@ -19,7 +19,7 @@
     "build": "vue-tsc -p tsconfig.build.json --emitDeclarationOnly --declaration"
   },
   "peerDependencies": {
-    "vue": "^3.5.0"
+    "vue": "^3.5.43"
   },
   "dependencies": {
     "@aikitr/utils": "workspace:*"
@@ -30,7 +30,7 @@
     "jsdom": "^24.1.1",
     "typescript": "^5.5.4",
     "vitest": "^2.0.5",
-    "vue": "^3.5.0",
+    "vue": "^3.5.43",
     "vue-tsc": "^2.1.6"
   }
 }
