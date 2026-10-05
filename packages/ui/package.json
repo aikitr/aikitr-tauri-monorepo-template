@@ -77,32 +77,32 @@
     "build": "vue-tsc -p tsconfig.build.json --emitDeclarationOnly --declaration"
   },
   "peerDependencies": {
-    "vue": "^3.5.0"
+    "vue": "^3.5.43"
   },
   "dependencies": {
     "@aikitr/utils": "workspace:*",
-    "@internationalized/date": "^3.12.2",
-    "@lucide/vue": "^1.27.0",
-    "@tanstack/vue-table": "^8.21.3",
-    "@unovis/vue": "^1.5.1",
+    "@internationalized/date": "^3.12.4",
+    "@lucide/vue": "^1.49.0",
+    "@tanstack/vue-table": "^9.2.4",
+    "@unovis/vue": "^1.7.1",
     "@vee-validate/zod": "^4.15.1",
-    "@vueuse/core": "^14.4.0",
+    "@vueuse/core": "^15.0.0",
     "class-variance-authority": "^0.7.0",
     "clsx": "^2.1.1",
     "embla-carousel-vue": "^8.6.0",
-    "reka-ui": "^2.10.1",
-    "tailwind-merge": "^3.6.0",
+    "reka-ui": "^2.10.5",
+    "tailwind-merge": "^3.7.0",
     "vaul-vue": "^0.4.1",
     "vee-validate": "^4.15.1",
     "vue-sonner": "^2.0.9",
-    "zod": "^3.23.8"
+    "zod": "^4.6.5"
   },
   "devDependencies": {
     "@types/node": "^20.14.10",
     "@vitejs/plugin-vue": "^5.1.2",
     "typescript": "^5.5.4",
     "vitest": "^2.0.5",
-    "vue": "^3.5.0",
+    "vue": "^3.5.43",
     "vue-tsc": "^2.1.6"
   }
 }
